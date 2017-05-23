@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{$title}</title>
+</head>
+<body>
+<form action="__URL__/stuendrecord" enctype="multipart/form-data" method="post" >
+
+    <h1>结题信息项填写</h1>
+    <div class="clear"></div>
+
+    <p>
+        <label>项目名称</label>
+        <input class="text-input" type="text" value="{$stuendprojname}"  name="stuendprojname"/>
+    </p>
+
+    <div class="clear"></div>
+
+    <p>
+        <label>结题报告题目</label>
+        <input class="text-input" type="text" value="{$stuendreportname}" name="stuendreportname" />
+    </p>
+
+    <div class="clear"></div>
+
+    <p>
+        <label>上一次提交的文档</label>
+        {$stuendfilelocate}
+
+    </p>
+
+    <div class="clear"></div>
+
+    <p>
+        <label>结题报告文档</label>
+
+        <input type="file"  name="document"/>
+    </p>
+
+    <div class="clear"></div>
+    <p>
+        <input class="button" type="submit" value="提交" />
+    </p>
+
+</form>
+<h1>{$operation} </h1>
+</body>
+</html>
