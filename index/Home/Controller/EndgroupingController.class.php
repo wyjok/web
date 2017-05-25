@@ -16,7 +16,7 @@ class EndgroupingController extends Controller {
             if(!($login[teacherrole]/10%10))
                 $this->quit();
             dump($login);
-
+ 
 
             $this->display();
         }else  {
