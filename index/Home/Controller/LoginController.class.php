@@ -18,10 +18,18 @@ class LoginController extends Controller
     }
     function Login()
     {
+
         $stulogin=M('Stulogin');//参数的User必须首字母大写，否则自动验证功能失效！
+        print_r($_POST);
+        die;
+
         $stuid=$_POST['id'];
         //$stutoken=md5($_POST['password']);
         $stutoken=$_POST['password'];
+        $a = $_POST['data'];
+        $data = json_decode($a);
+        print_r($data);
+        die;
         if ( $this->checkVerify($_POST['captcha']) ) {
             //查找输入的用户名是否存在
             if($stulogin->where("stuid ='$stuid' AND stutoken = '$stutoken'")->find()){

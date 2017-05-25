@@ -16,11 +16,11 @@ class TeacherindexController extends Controller {
 
             dump($login);
             //输出老师角色对应操作（1为导师，1 _ 为工业秘书，1 _ _ 为结题检查组，1_ _ _ 为教学秘书，1 _ _ _ _为审阅人，
-            //1 _ _ _ _ _为答辩组）
+                      //1 _ _ _ _ _为答辩组）
             if( (int)($login[teacherrole])%10) {
                 $this->assign('operation1', '<a href="' . U('/home/Stuendrecord/') . '" title="导师主页">导师主页</a>');
                 if( (int)($login[teacherrole])/10%10){
-                    $this->assign('operation2', '<a href="' . U('/home/Stuendrecord/') . '" title="工业实践秘书主页">工业实践秘书主页</a>');
+                    $this->assign('operation2', '<a href="' . U('/home/Endgrouping/') . '" title="工业实践秘书主页">工业实践秘书主页</a>');
                 }
                 if( (int)($login[teacherrole])/100%10){
                     $this->assign('operation3', '<a href="' . U('/home/Stuendrecord/') . '" title="结题检查组主页">结题检查组主页</a>');
