@@ -19,7 +19,7 @@ class LoginController extends Controller
     function Login()
     {
         $stulogin=M('Stulogin');//参数的User必须首字母大写，否则自动验证功能失效！
-        $stuid=$_POST['stuid'];
+        $stuid=$_POST['id'];
         //$stutoken=md5($_POST['password']);
         $stutoken=$_POST['password'];
         if ( $this->checkVerify($_POST['captcha']) ) {
