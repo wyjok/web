@@ -2,11 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js">
+    </script>
     <title>{$title}</title>
+
 </head>
 <body>
+<!--
 <form action="__URL__/login" method="POST">
+    <div id="info">
 
+    </div>
+    <ul>
+        <li data-stuid="1">xues1</li>
+        <li data-stuid="2">xues1</li>
+        <li data-stuid="3">xues1</li>
+    </ul>
     <p>
         <label>用户名</label>
         <input class="text-input" type="text"  name="id"/>
@@ -22,9 +33,6 @@
     <div class="clear"></div>
 
     <p>
-        <!--<label>验证码</label>
-        <input class="text-input" type="text" name="verify"/>
-        <img src="__APP__/Common/verify"/ onclick="show(this)">-->
 
         <img id="verifyImg" src="__URL__/verify"  >
     </p>
@@ -43,5 +51,33 @@
         <input class="button" type="submit" value="登录" />
     </p>
 </form>
+-->
+<form action="__URL__/login" method="POST">
+    <input type="radio" name="a" value="1"/>
+    <input type="radio" name="a" value="2"/>
+    <input type="radio" name="a" value="3"/>
+    <input type="radio" name="b" value="1"/>
+    <input type="radio" name="b" value="2"/>
+    <input type="radio" name="b" value="3"/>
+    <button >upload</button>
+    </form>
+<script>
+    $(document).ready(function(){
+        return;
+        console.log("12312");
+        // 开始写 jQuery 代码...
+        var data1={};
+        $("li").each(function () {
+            data1[$(this).data("stuid")]=$(this).text();
+            console.log(data1);
+        });
+        $.post("__URL__/login",{
+            data: JSON.stringify(data1)
+        },function(data){
+            var info=data.info;
+            $("#info").text(info);
+        });
+    }());
+</script>
 </body>
 </html>
