@@ -7,9 +7,9 @@
  */
 
 namespace Home\Controller;
+use Think\Controller;
 
-
-class Teacherlogin extends Controller
+class TeacherloginController extends Controller
 {
     public function index()
     {
@@ -17,19 +17,19 @@ class Teacherlogin extends Controller
         $this->assign('title','毕业设计系统教师登录');
         $this->display();
     }
-    function login()
+    function Teacherlogin()
     {
-        $login=M('Stulogin');//参数的User必须首字母大写，否则自动验证功能失效！
-        $stuid=$_POST['stuid'];
+        $stulogin=M('Teacherlogin');//参数的User必须首字母大写，否则自动验证功能失效！
+        $teacherid=$_POST['id'];
         //$stutoken=md5($_POST['password']);
-        $stutoken=$_POST['password'];
+        $teachertoken=$_POST['password'];
         if ( $this->checkVerify($_POST['captcha']) ) {
             //查找输入的用户名是否存在
-            if($stulogin->where("stuid ='$stuid' AND stutoken = '$stutoken'")->find()){
+            if($stulogin->where("teacherid ='$teacherid' AND teachertoken = '$teachertoken'")->find()){
 
-                session(stuid,$stuid);
+                session(teacherid,$teacherid);
                 //$url=U('/home/index/stuid/'.$stuid);
-                $url=U('/home/index');
+                $url=U('/home/Teacherindex');
                 redirect($url,0, '跳转中...');
             }else{
                 $this->error('用户名或密码错误');
