@@ -17,6 +17,12 @@ class EndgroupingController extends Controller {
                 $this->quit();
             dump($login);
 
+            $teacherendassign = M('teacherendassign');
+            $groupcount=0;
+            $groupcount=$teacherendassign->distinct(true)->field('endgroupnum')->count();
+            if($groupcount==0)
+                redirect(U('/home/Endgrouping/teachergrouping'),2, '请先进行检查组老师分组');
+            $this->assign('groupcount', $groupcount);
             $stuinfo = M('stuinfo');
             $stulist = $stuinfo->select();
             $this->assign('stulist',$stulist);
@@ -26,6 +32,30 @@ class EndgroupingController extends Controller {
         }else  {
             $this->error('您好，请先登录！！！',U('/home/teacherlogin/'));
         }
+    }
+    public function teachergrouping(){
+        $teacherendassign = M('teacherendassign');
+        $groupcount=0;
+        $groupcount=$teacherendassign->distinct(true)->field('endgroupnum')->count();
+        if($groupcount!=0){
+            for($i=1;$i<$groupcount;$i++){
+
+                $teacherinfo = M('teacherinfo');
+                $teacherids=$teacherendassign->where('endgroupnum=$i')->getField('teacherid');
+                dump($teacherids);
+
+
+                foreach ($teacherids as $id)
+                {
+                    $id=$teacherinfo->where('teacherid=$id')->getField('teachername');
+                }
+                dump($teacherids);
+            }
+        }
+        $this->display();
+    }
+    public function teachergroupinput(){
+
     }
 
     function quit(){

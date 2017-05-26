@@ -6,11 +6,12 @@
 </head>
 <body>
 <p><a href="__URL__/quit" title="退出">退出</a> </p>
-<volist name="stulist" id="vo">
+<volist name="stulist" id="vo" key="k">
     {$vo.stuname}
-    <label><input name="{$i}" type="radio" value="1" />  </label>
-    <label><input name="{$i}" type="radio" value="2" />  </label>
-    <label><input name="{$i}" type="radio" value="3" />  </label>
+    <for start="1" end="{$groupcount}">
+        <label><input name="{$k}" type="radio" value="{$i}" />  </label>
+    </for>
+
     <br/>
 </volist>
 
