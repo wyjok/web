@@ -7,6 +7,13 @@
 <body>
 <p><a href="__URL__/quit" title="退出">退出</a> </p>
 
+<volist name="stulist" id="vo">
+    {$vo.stuname}
+    <label><input name="{$i}" type="radio" value="1" />  </label>
+    <label><input name="{$i}" type="radio" value="2" />  </label>
+    <label><input name="{$i}" type="radio" value="3" />  </label>
+    <br/>
+</volist>
 
 </body>
 </html>
