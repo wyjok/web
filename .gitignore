@@ -11,3 +11,4 @@ uploads/
 *.log
 index/index.html
 .phpstorm.meta.php
+*.jpg
