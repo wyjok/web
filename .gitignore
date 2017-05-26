@@ -1,0 +1,13 @@
+ThinkPHP/LICENSE.txt
+*.bak
+index/README.md
+.idea/
+*Runtime/
+ThinkPHP/
+uploads/
+.htaccess
+*.json
+*.md
+*.log
+index/index.html
+.phpstorm.meta.php
