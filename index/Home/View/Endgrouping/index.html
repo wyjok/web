@@ -2,19 +2,86 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js">
+
+    </script>
     <title>欢迎{$login.teachername}老师登录</title>
 </head>
 <body>
 <p><a href="__URL__/quit" title="退出">退出</a> </p>
-<volist name="stulist" id="vo" key="k">
-    {$vo.stuname}
-    <for start="1" end="{$groupcount}">
-        <label><input name="{$k}" type="radio" value="{$i}" />  </label>
-    </for>
+<!--<volist name="stulist" id="vo" >-->
+    <!--{$vo.stuname}-->
 
-    <br/>
-</volist>
+    <!--<br/>-->
+<!--</volist>-->
 
+<script>
+
+    $(document).ready(function(){
+
+
+
+        console.log("12312");
+
+        // 开始写 jQuery 代码...
+
+        var data1={
+            page:1,
+            size:5
+        };
+
+
+
+        $.post("groupinginfo",{
+
+            data: JSON.stringify(data1)
+
+        },function(data){
+
+            var info=data.info;
+
+            $("#info").text(info);
+
+        });
+
+    }());
+    $(document).ready(function(){
+
+
+
+        console.log("12312");
+
+        // 开始写 jQuery 代码...
+
+        var data1={
+            page:1,
+            size:5
+        };
+
+
+
+        $.post("groupsetinfo",{
+
+            data: JSON.stringify(data1)
+
+        },function(data){
+
+            var info=data.info;
+
+            $("#info").text(info);
+
+        });
+
+    }());
+</script>
+<foreach name="stulist" item="v" key="i">
+    <label>{$v.stuname}  </label>
+    <foreach name="groupnum" item="v1" key="j">
+        <label><input name="{$i}" type="radio" value="{$groupnum}" />  </label>
+
+    </foreach>
+    </br>
+</foreach>
 
 </body>
 </html>

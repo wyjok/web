@@ -6,29 +6,56 @@
 </head>
 <body>
 
-<p>
-    <label>第1组</label>
-    <input class="text-input" type="text"  name="g1"/>
-</p>
+<p>分组情况</p>
 
+
+
+<foreach name="groupteachername" item="v" key="i">
+    <label>第{$i}组  </label>
+    <foreach name="v" item="value" key="j">
+
+             <{$value}>
+
+    </foreach>
+    </br>
+</foreach>
 
 <form action="__URL__/teachergroupinput" method="POST">
+
     <p>
         <label>第1组</label>
         <input class="text-input" type="text"  name="g1"/>
     </p>
-    <p>
-        <label>第2组</label>
-        <input class="text-input" type="text"  name="g2"/>
+    <!--<p>-->
+        <!--<label>第2组</label>-->
+        <!--<input class="text-input" type="text"  name="g2"/>-->
+    <!--</p>-->
+    <!--<p>-->
+        <!--<label>第3组</label>-->
+        <!--<input class="text-input" type="text"  name="g3"/>-->
+    <!--</p>-->
+    <!--<p>-->
+        <!--<label>第4组</label>-->
+        <!--<input class="text-input" type="text"  name="g4"/>-->
+    <!--</p>-->
+    <p id="btn">
+        <input class="button" type="submit" value="分组"  />
     </p>
-    <p>
-        <label>第3组</label>
-        <input class="text-input" type="text"  name="g3"/>
-    </p>
-    <p>
-        <label>第4组</label>
-        <input class="text-input" type="text"  name="g4"/>
-    </p>
+
 </form>
+<p>
+    <button onclick="a()">增加分组</button>
+</p>
+<script type="text/javascript">
+    var i=2;
+    function a(){
+        var d1 = document.getElementById('btn');
+        var aText = "<p>   <label>第"+i+"组</label>   <input class='text-input' type='text'  name='g"+i+++"'/>  </p>";
+        d1.insertAdjacentHTML('beforebegin', aText);
+        //document.getElementById("b").innerHTML(aText);
+    }
+</script>
+
+</body>
 </body>
 </html>
