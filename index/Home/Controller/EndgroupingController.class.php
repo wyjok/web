@@ -39,21 +39,47 @@ class EndgroupingController extends Controller {
             $this->error('您好，请先登录！！！',U('/home/teacherlogin/'));
         }
     }
+    public function groupinput(){
+        $stuinfo = M('stuendassign');
+        $stugroup=(array)($_POST['postData']);
+        dump($stugroup);
+        foreach ($stugroup as $stu){
+            $temp['stuid']=$stu['stuId'];
+            $temp['endgroupnum']=$stu['groupId'];
+            $inputlist[]= $temp;
+        }
+        dump($inputlist);
+        $stuinfo->addAll($inputlist);
+    }
     public function groupinginfo(){
         $stuinfo = M('stuinfo');
-        $data1=$_POST['data'];
-        $data = json_decode($data1);
+
 //        dump($data);
 //        print_r($data);
-        $data=(array)$data;
         //dump($data['page']);
         //dump($data['size']);
         //
-        $stulist = $stuinfo->page($data['page'],$data['size'])->join('LEFT join stuendassign ON stuinfo.stuid = stuendassign.stuid')
-            ->field('stuinfo.stuid,stuinfo.stuname,stuendassign.endgroupnum')
+        $stulist = $stuinfo->page($_GET['page'],$_GET['size'])->join('LEFT join stuendassign ON stuinfo.stuid = stuendassign.stuid')
+            ->field('stuinfo.stuid as stuId,stuinfo.stuname as stuName,stuendassign.endgroupnum as groupId')
             ->order('stuinfo.stuid')->select();
+
+        //echo M('stuinfo')->_sql();
+        $testarr['success']=true;
+        $testarr['message']='';
+        $testarr['data']=$stulist;
         //dump($stulist);
-        $this->ajaxReturn($stulist,'JSON');
+        //echo json_encode($stulist);
+
+        $this->ajaxReturn($testarr,'JSON');
+    }
+    public function totalNum(){
+        $stuinfo = M('stuinfo');
+        $totalNum = $stuinfo->count();
+        $testarr['success']=true;
+        $testarr['message']='';
+        $testarr['totalNum']=$totalNum;
+        $this->ajaxReturn($testarr,'JSON');
+
     }
     public function groupsetinfo(){
         $teacherendassign = M('teacherendassign');
@@ -61,10 +87,15 @@ class EndgroupingController extends Controller {
         foreach($groupnum as $number){
             $teacherinfo = M('teacherinfo');
             $teacherids=$teacherendassign->where('endgroupnum='.$number['endgroupnum'])->getField('teacherid',true);
-            $groupsetinfo[$number['endgroupnum']]['teachername'] = implode(',',$teacherinfo->where(array('teacherid'=>array('in',$teacherids)))->getField('teachername',true));
-            $groupsetinfo[$number['endgroupnum']]['groupnum']=$number['endgroupnum'];
+            $data['groupName'] = implode(',',$teacherinfo->where(array('teacherid'=>array('in',$teacherids)))->getField('teachername',true));
+            $data['groupId']=$number['endgroupnum'];
+            $groupsetinfo[]=$data;
         }
-        $this->ajaxReturn($groupsetinfo,'JSON');
+        $testarr['success']=true;
+        $testarr['message']='';
+        $testarr['data']=$groupsetinfo;
+        //echo json_encode($groupsetinfo);
+        $this->ajaxReturn($testarr,'JSON');
     }
     public function teachergrouping(){
         $teacherendassign = M('teacherendassign');
