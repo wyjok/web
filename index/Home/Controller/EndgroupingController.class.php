@@ -88,6 +88,7 @@ class EndgroupingController extends Controller {
             }
             dump($groupteachername);
             $this->assign('groupteachername',$groupteachername);
+            $this->assign('number',6);
         }
         $this->display();
     }
