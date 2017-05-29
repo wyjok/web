@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{$title}</title>
+</head>
+<body>
+<form action="__URL__/login" method="POST">
+
+    <p>
+        <label>用户名</label>
+        <input class="text-input" type="text"  name="id"/>
+    </p>
+
+    <div class="clear"></div>
+
+    <p>
+        <label>密码</label>
+        <input class="text-input" type="password" name="password"/>
+    </p>
+
+    <div class="clear"></div>
+
+    <p>
+        <!--<label>验证码</label>
+        <input class="text-input" type="text" name="verify"/>
+        <img src="__APP__/Common/verify"/ onclick="show(this)">-->
+
+        <img id="verifyImg" src="__URL__/verify"  >
+    </p>
+
+    <div class="clear"></div>
+
+    <p>
+        <label>验证码</label>
+        <input type="text" name="captcha" class="form-control" id="exampleInputCode" placeholder="Code">
+    </p>
+
+    <div class="clear"></div>
+
+
+    <p>
+        <input class="button" type="submit" value="登录" />
+    </p>
+</form>
+</body>
+</html>
