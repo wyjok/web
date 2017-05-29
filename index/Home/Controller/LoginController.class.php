@@ -42,7 +42,11 @@ class LoginController extends Controller
 
     public function verify()
     {
-        $Verify = new \Think\Verify();
+        $config =    array(
+            'fontSize'    =>    30,    // 验证码字体大小
+
+        );
+        $Verify = new \Think\Verify($config);
         $Verify->entry();
     }
     function checkVerify($code, $id = '')

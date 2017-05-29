@@ -1,87 +1,198 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>分组</title>
+	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="__PUBLIC__/js/juicer-min.js"></script>
+	<link rel="stylesheet" href="__PUBLIC__/css/pagination.css">
+	<script src="__PUBLIC__/js/jquery.pagination.js"></script>
+  <style>
+		body{
+			background:url(__PUBLIC__/img/login-bg.jpg) no-repeat;
+			background-size: cover;
+		}
+		.header{
+			padding:15px 0;
+			color:#fff;
+			background-color:#847575;
+			background: rgba(0,0,0,0.30);
+		}
+		.login-wrapper{
+			max-width: 62%;
+			min-width: 40%;
+			padding-top: 50px;
+		}
+		.bg-transparent{
+			background-color:#FFF;
+			background: rgba(255,255,255,0.3);
+			border: none;
+		}
+		.checkbox-inline{
+			padding-left :0px;
+		}
+	</style>
 
-    </script>
-    <title>欢迎{$login.teachername}老师登录</title>
+  <script>
+		$(function(){
+			var PAGE_SIZE = 10;//默认每页显示的数据量
+			var groups = [];
+			function listGroups(){
+				$.ajax("groupsetinfo",{
+					async : false,
+					method : 'GET',
+					dataType : 'json'
+				}).done(function(data){
+					if(data.success){
+						for(var key in data.data){
+							groups.push(data.data[key]);
+						}
+					}
+//					console.log(data);
+//					console.log(groups);
+				}).fail(function(xhr, status){
+					console.error("请求分组信息失败："+status);
+				});
+			}
+			//马上执行
+			listGroups();
+
+			function listStudents(page, size) {
+				page = page || 1;
+				size = size || PAGE_SIZE;
+				$.get("groupinginfo",{
+						page:page,
+						size:size
+					},
+					function(data){
+						if(data.success){
+							var students = [];
+							for(var key in data.data){
+								students.push(data.data[key]);
+							}
+							var template = $("#group-template").html();
+							var html = juicer(template, {students : students,groups : groups});
+							$("#group-tbody").empty().append(html);
+						}
+					}
+				);
+			}
+
+			function initSaveBtn() {
+				$("#save-btn").click(function(){
+					var btn = $("#save-btn");
+					//判断是否不可用
+					if(!btn.hasClass('disabled')){
+						btn.addClass('disabled');//锁定按钮
+						var postData = [];
+
+						$("#group-tbody input:checked").each(function(){
+							var entry = {
+								stuId : $(this).attr('name'),
+								groupId : $(this).val()
+							}
+							console.log(entry);
+							postData.push(entry);
+						});
+//						//提交保存
+						$.post("groupinput",{
+								postData : postData
+							},
+							function(data){
+								btn.removeClass('disabled');//解锁按钮
+								console.log("post success");
+						});
+					}
+				});
+			}
+			//初始化提交保存按钮
+			initSaveBtn();
+
+			/**
+			*初始化分页
+			*/
+			function initPagination(){
+				$.get("totalNum",
+					function(data){
+						console.log(data);
+						if(data.success){
+							var totalNum = data.totalNum;
+							$("#pagination").pagination(totalNum, {
+								items_per_page : PAGE_SIZE, //每页显示的条目数
+								num_edge_entries: 1, //边缘页数
+								num_display_entries: 5, //主体页数
+								ellipse_text : "***" ,
+								prev_text: "上一页",
+								next_text: "下一页",
+//								prev_show_always:false,
+//								next_show_always:false,
+								callback: function(page_index, jq){
+									listStudents(page_index+1,PAGE_SIZE);
+								},
+							});
+						}
+
+					}
+				);
+			}
+			initPagination();
+		});
+	</script>
 </head>
+
 <body>
-<p><a href="__URL__/quit" title="退出">退出</a> </p>
-<!--<volist name="stulist" id="vo" >-->
-    <!--{$vo.stuname}-->
+		<!-- 头部 -->
+		<div class="header">
+        <div class="container">
+            <h2 style="font-size:50px"><span class="glyphicon glyphicon-home"></span>欢迎您系统</h2>
+            <p style="color:#ddd;font-size:24px; line-height:48px">欢迎您</p>
+        </div>
+    </div>
 
-    <!--<br/>-->
-<!--</volist>-->
+		<!-- 主体内容 -->
+		<div class="container login-wrapper">
+			<div class="panel panel-default bg-transparent">
+					<div class="panel-heading bg-transparent">
+							<h3 class="panel-title">分组</h3>
+					</div>
+					<div class="panel-body bg-transparent">
+							<table class="table table-hover">
+								<caption>分组表格布局</caption>
+								<thead>
+									<tr>
+										<th>学生</th>
+										<th>小组</th>
+									</tr>
+								</thead>
+								<tbody id = "group-tbody">
 
-<script>
+								</tbody>
+							</table>
+							<div class="text-center">
+								<button class="btn btn-success" id="save-btn">保存分组</button>
+							</div>
+							<div id="pagination" class="pagination text-center center-block">
 
-    $(document).ready(function(){
-
-
-
-        console.log("12312");
-
-        // 开始写 jQuery 代码...
-
-        var data1={
-            page:1,
-            size:5
-        };
-
-
-
-        $.post("groupinginfo",{
-
-            data: JSON.stringify(data1)
-
-        },function(data){
-
-            var info=data.info;
-
-            $("#info").text(info);
-
-        });
-
-    }());
-    $(document).ready(function(){
-
-
-
-        console.log("12312");
-
-        // 开始写 jQuery 代码...
-
-        var data1={
-            page:1,
-            size:5
-        };
-
-
-
-        $.post("groupsetinfo",{
-
-            data: JSON.stringify(data1)
-
-        },function(data){
-
-            var info=data.info;
-
-            $("#info").text(info);
-
-        });
-
-    }());
-</script>
-<foreach name="stulist" item="v" key="i">
-    <label>{$v.stuname}  </label>
-    <foreach name="groupnum" item="v1" key="j">
-        <label><input name="{$i}" type="radio" value="{$groupnum}" />  </label>
-
-    </foreach>
-    </br>
-</foreach>
-
+							</div>
+					</div>
+			</div>
+		</div>
 </body>
-</html>
+
+<script id="group-template" type="text/template">
+	{@each students as stu, index}
+		<tr>
+			<td>${stu.stuname}</td>
+			<td>
+				<div>
+					{@each groups as group}
+						<label class="checkbox-inline">
+							<input type="radio" name="${stu.stuid}" value="${group.groupId}" {@if stu.groupid == group.groupId } checked {@/if}/>${group.groupName}
+						</label>
+					{@/each}
+				</div>
+			</td>
+		</tr>
+	{@/each}
+</script>

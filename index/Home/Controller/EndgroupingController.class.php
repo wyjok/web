@@ -42,13 +42,17 @@ class EndgroupingController extends Controller {
     public function groupinput(){
         $stuinfo = M('stuendassign');
         $stugroup=(array)($_POST['postData']);
-        dump($stugroup);
+        //dump($stugroup);
         foreach ($stugroup as $stu){
             $temp['stuid']=$stu['stuId'];
+            $del[]=$stu['stuId'];
             $temp['endgroupnum']=$stu['groupId'];
             $inputlist[]= $temp;
         }
-        dump($inputlist);
+        //dump($inputlist);
+
+        $stuinfo->delete(implode(',',$del));
+//        echo $stuinfo->_sql();
         $stuinfo->addAll($inputlist);
     }
     public function groupinginfo(){
