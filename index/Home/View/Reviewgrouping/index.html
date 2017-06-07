@@ -39,7 +39,7 @@
 			var PAGE_SIZE = 10;//默认每页显示的数据量
 			var groups = [];
 			function listGroups(){
-				$.ajax("endgrouping/groupsetinfo",{
+				$.ajax("reviewgrouping/groupsetinfo",{
 					async : false,
 					method : 'GET',
 					dataType : 'json'
@@ -61,7 +61,7 @@
 			function listStudents(page, size) {
 				page = page || 1;
 				size = size || PAGE_SIZE;
-				$.get("endgrouping/groupinginfo",{
+				$.get("reviewgrouping/groupinginfo",{
 						page:page,
 						size:size
 					},
@@ -96,7 +96,7 @@
 							postData.push(entry);
 						});
 //						//提交保存
-						$.post("endgrouping/groupinput",{
+						$.post("reviewgrouping/groupinput",{
 								postData : postData
 							},
 							function(data){
@@ -113,7 +113,7 @@
 			*初始化分页
 			*/
 			function initPagination(){
-				$.get("endgrouping/totalNum",
+				$.get("reviewgrouping/totalNum",
 					function(data){
 						console.log(data);
 						if(data.success){

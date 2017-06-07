@@ -20,13 +20,13 @@ class TeacherindexController extends Controller {
             if( (int)($login[teacherrole])%10) {
                 $this->assign('operation1', '<a href="' . U('/home/Stuendrecord/') . '" title="导师主页">导师主页</a>');
                 if( (int)($login[teacherrole])/10%10){
-                    $this->assign('operation2', '<a href="' . U('/home/Stuendrecord/') . '" title="工业实践秘书主页">工业实践秘书主页</a>');
+                    $this->assign('operation2', '<a href="' . U('/home/endgrouping/') . '" title="工业实践秘书主页">工业实践秘书主页</a>');
                 }
                 if( (int)($login[teacherrole])/100%10){
-                    $this->assign('operation3', '<a href="' . U('/home/Stuendrecord/') . '" title="结题检查组主页">结题检查组主页</a>');
+                    $this->assign('operation3', '<a href="' . U('/home/endjudge/') . '" title="结题检查组主页">结题检查组主页</a>');
                 }
                 if( (int)($login[teacherrole])/1000%10){
-                    $this->assign('operation4', '<a href="' . U('/home/Stuendrecord/') . '" title="教学秘书主页">教学秘书主页</a>');
+                    $this->assign('operation4', '<a href="' . U('/home/reviewgrouping/') . '" title="教学秘书主页">教学秘书主页</a>');
                 }
                 if( (int)($login[teacherrole])/10000%10){
                     $this->assign('operation5', '<a href="' . U('/home/Stuendrecord/') . '" title="论文审阅人主页">论文审阅人主页</a>');
