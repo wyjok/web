@@ -22,18 +22,29 @@ class StuendrecordController extends Controller
             if($userrecord!=null) {
                 $stuendprojname = $userrecord['stuendprojname'];
                 $stuendreportname = $userrecord['stuendreportname'];
-
-                $stuendfilelocate = '<a href="'.'../../uploads/'.'endreport/'.$stuid.'/'.$userrecord['stuendfilelocate'].'" title="文档下载">下载</a>';
                 $this->assign('stuendprojname', $stuendprojname);
-                //配置页面显示内容
                 $this->assign('stuendreportname', $stuendreportname);
+
+               // $stuendfilelocate = '<a href="'.'../../uploads/'.'endreport/'.$stuid.'/'.$userrecord['stuendfilelocate'].'" title="文档下载">下载</a>';
+                $stuendfilelocate = '../../uploads/'.'endreport/'.$stuid.'/'.$userrecord['stuendfilelocate'];
+                $encode = mb_detect_encoding($stuendreportname, array("ASCII",'UTF-8',"GB2312","GBK",'BIG5'));
+                dump($encode);
+                $filename=$userrecord['stuendfilelocate'];
+                if(mb_strlen($filename,$encode)>30){
+                    $filename=mb_substr($filename,0,30,$encode)."...";
+                }
+
+
+                $this->assign('filename', $filename);
+                //配置页面显示内容
+                $this->assign('filetitle', $userrecord['stuendfilelocate']);
 
             }else{
                 $stuendfilelocate = '未提交过文档';
             }
             $this->assign('stuendfilelocate', $stuendfilelocate);
 
-            $this->assign('operation','<a href="'.U('/home/').'" title="返回">返回</a>');
+            //$this->assign('operation','<a href="'.U('/home/').'" title="返回">返回</a>');
             $this->display();
         }else  {
             $this->error('您好，请先登录！！！',U('/home/login/'));
@@ -56,7 +67,7 @@ class StuendrecordController extends Controller
                 $upload->savePath  =     'endreport/';
                 $upload->replace   =   true;
                 dump(date("YmdHis", time()));
-                $upload->saveName  = date("YmdHis", time()).'-'.$stuendreportname;
+                $upload->saveName  = $stuendreportname.'-'.date("YmdHis", time());
 
                 $stuid = session('stuid');
 
@@ -73,18 +84,18 @@ class StuendrecordController extends Controller
                     $data['stuid'] = $stuid;
                     $data['stuendprojname'] = $stuendprojname;
                     $data['stuendreportname'] = $stuendreportname;
-                    dump($stuendprojname);
-                    dump($stuendreportname);
-                    dump($stuid);
-                    dump($info);
-                    dump($info['document']['savename']);
+//                    dump($stuendprojname);
+//                    dump($stuendreportname);
+//                    dump($stuid);
+//                    dump($info);
+//                    dump($info['document']['savename']);
                     //'./uploads/endreport/'.$stuid.'/'.
                     $data['stuendfilelocate'] = $info['document']['savename'];
                    // $result=$Form->where("stuid=$stuid")->save($data);
                     $result=$Form->save($data);
-                    dump($result);
-                    dump($data);
-                    $this->success('upload done！','',10);
+//                    dump($result);
+//                    dump($data);
+                    $this->success('upload done！','',1);
 
                     // redirect some where
                 }

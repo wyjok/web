@@ -26,7 +26,7 @@ class TeacherindexController extends Controller {
                     $this->assign('operation3', '<a href="' . U('/home/endjudge/') . '" title="结题检查组主页">结题检查组主页</a>');
                 }
                 if( (int)($login[teacherrole])/1000%10){
-                    $this->assign('operation4', '<a href="' . U('/home/reviewgrouping/') . '" title="教学秘书主页">教学秘书主页</a>');
+                    $this->assign('operation4', '<a href="' . U('/home/reviewgrouping/') . '" title="教学秘书主页">教学秘书主页</a><a href="' . U('/home/defensegrouping/') . '" title="教学秘书主页">答辩</a>');
                 }
                 if( (int)($login[teacherrole])/10000%10){
                     $this->assign('operation5', '<a href="' . U('/home/Stuendrecord/') . '" title="论文审阅人主页">论文审阅人主页</a>');
