@@ -99,6 +99,7 @@ class EndgroupingController extends Controller {
         $testarr['success']=true;
         $testarr['message']='';
         $testarr['data']=$groupsetinfo;
+
         //echo json_encode($groupsetinfo);
         $this->ajaxReturn($testarr,'JSON');
     }
@@ -106,22 +107,22 @@ class EndgroupingController extends Controller {
         $teacherendassign = M('teacherendassign');
         $groupnum=0;
         $groupnum=$teacherendassign->distinct(true)->field('endgroupnum')->select();
-        dump($groupnum);
+        //dump($groupnum);
         if($groupnum!=0){
             $teacherinfo = M('teacherinfo');
             foreach($groupnum as $number){
-                dump($number);
+                //dump($number);
                 $teacherids=$teacherendassign->where('endgroupnum='.$number['endgroupnum'])->getField('teacherid',true);
-                echo M('teacherendassign')->_sql();
+               // echo M('teacherendassign')->_sql();
 
-                dump($teacherids);
+                //dump($teacherids);
 
-                $groupteachername[$number['endgroupnum']] = $teacherinfo->where(array('teacherid'=>array('in',$teacherids)))->getField('teachername',true);
-                echo M('teacherinfo')->_sql();
-                dump($groupteachername);
+                $groupteachername[$number['endgroupnum']] = implode('|',$teacherinfo->where(array('teacherid'=>array('in',$teacherids)))->getField('teachername',true));
+                //echo M('teacherinfo')->_sql();
+                //dump($groupteachername);
 
             }
-            dump($groupteachername);
+            //dump($groupteachername);
             $this->assign('groupteachername',$groupteachername);
             $this->assign('number',6);
         }
@@ -130,9 +131,9 @@ class EndgroupingController extends Controller {
     public function teachergroupinput(){
 
         for($i=1;;$i++){
-            dump($_POST['g'.$i]);
-            if(!empty($_POST['g'.$i])){
-                $groupteacher[$i]=explode('|',$_POST['g'.$i]);
+            dump($_POST['group'.$i]);
+            if(!empty($_POST['group'.$i])){
+                $groupteacher[$i]=explode('|',$_POST['group'.$i]);
 
             }
             else{
@@ -175,10 +176,23 @@ class EndgroupingController extends Controller {
 
             }
         }
-        dump($dataList);
+       // dump($dataList);
+
+        $endgroup=M('endgroup');
+        $endgroup->where('1')->delete();
+        for($i=0;$i<$k;$i++){
+            $data['endgroupnum']=$i+1;
+            $endgroup->add($data);
+        }
+
         $teacherendassign->where('1')->delete();
-        $teacherendassign->addAll($dataList);
-        echo M('teacherinfo')->_sql();
+        $result=$teacherendassign->addAll($dataList);
+
+
+//        echo M('teacherinfo')->_sql();
+        if($result>0){
+            $this->success('教师分组完成，进入学生分组',U('/home/endgrouping/'),1);
+        }
     }
 
     function quit(){

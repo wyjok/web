@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{$title}</title>
+</head>
+<body>
+<form action="__URL__/judgementinput/stuid/{$stuid}"  method="post" >
+
+    <h1>结题检查信息{$teacher}</h1>
+    <div class="clear"></div>
+
+    <p>
+        <label>结题通过情况</label>
+        <input type="radio" name="permission" value="0" {$checked0}/>未通过
+        <input type="radio" name="permission" value="1" {$checked1}/>通过
+    </p>
+
+    <div class="clear"></div>
+
+    <p>
+        <label>结题结论</label>
+        <input class="text-input" type="text" value="{$comment}"  name="comment"  />
+    </p>
+
+    <div class="clear"></div>
+    <p>
+        <input class="button" type="submit" value="提交" />
+    </p>
+
+</form>
+
+</body>
+</html>

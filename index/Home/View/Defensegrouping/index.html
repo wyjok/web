@@ -1,14 +1,15 @@
 <!DOCTYPE html>
+<html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>分组</title>
+	<title>答辩学生分组</title>
 	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="__PUBLIC__/js/juicer-min.js"></script>
 	<link rel="stylesheet" href="__PUBLIC__/css/pagination.css">
 	<script src="__PUBLIC__/js/jquery.pagination.js"></script>
-  <style>
+	<style>
 		body{
 			background:url(__PUBLIC__/img/login-bg.jpg) no-repeat;
 			background-size: cover;
@@ -17,7 +18,6 @@
 			padding:15px 0;
 			color:#fff;
 			background-color:#847575;
-
 			background: rgba(0,0,0,0.30);
 		}
 		.login-wrapper{
@@ -35,12 +35,12 @@
 		}
 	</style>
 
-  <script>
+	<script>
 		$(function(){
 			var PAGE_SIZE = 10;//默认每页显示的数据量
 			var groups = [];
 			function listGroups(){
-				$.ajax("defensegrouping/groupsetinfo",{
+				$.ajax("__URL__/groupsetinfo",{
 					async : false,
 					method : 'GET',
 					dataType : 'json'
@@ -62,21 +62,21 @@
 			function listStudents(page, size) {
 				page = page || 1;
 				size = size || PAGE_SIZE;
-				$.get("defensegrouping/groupinginfo",{
-						page:page,
-						size:size
-					},
-					function(data){
-						if(data.success){
-							var students = [];
-							for(var key in data.data){
-								students.push(data.data[key]);
+				$.get("__URL__/groupinginfo",{
+							page:page,
+							size:size
+						},
+						function(data){
+							if(data.success){
+								var students = [];
+								for(var key in data.data){
+									students.push(data.data[key]);
+								}
+								var template = $("#group-template").html();
+								var html = juicer(template, {students : students,groups : groups});
+								$("#group-tbody").empty().append(html);
 							}
-							var template = $("#group-template").html();
-							var html = juicer(template, {students : students,groups : groups});
-							$("#group-tbody").empty().append(html);
 						}
-					}
 				);
 			}
 
@@ -97,13 +97,13 @@
 							postData.push(entry);
 						});
 //						//提交保存
-						$.post("defensegrouping/groupinput",{
-								postData : postData
-							},
-							function(data){
-								btn.removeClass('disabled');//解锁按钮
-								console.log("post success");
-						});
+						$.post("__URL__/groupinput",{
+									postData : postData
+								},
+								function(data){
+									btn.removeClass('disabled');//解锁按钮
+									console.log("post success");
+								});
 					}
 				});
 			}
@@ -111,30 +111,47 @@
 			initSaveBtn();
 
 			/**
-			*初始化分页
-			*/
+			 *初始化分页
+			 */
 			function initPagination(){
-				$.get("defensegrouping/totalNum",
-					function(data){
-						console.log(data);
-						if(data.success){
-							var totalNum = data.totalNum;
-							$("#pagination").pagination(totalNum, {
-								items_per_page : PAGE_SIZE, //每页显示的条目数
-								num_edge_entries: 1, //边缘页数
-								num_display_entries: 5, //主体页数
-								ellipse_text : "***" ,
-								prev_text: "上一页",
-								next_text: "下一页",
+				$.get("__URL__/totalNum",
+						function(data){
+							console.log(data);
+							if(data.success){
+								var totalNum = data.totalNum;
+								$("#pagination").pagination(totalNum, {
+									items_per_page : PAGE_SIZE, //每页显示的条目数
+									num_edge_entries: 1, //边缘页数
+									num_display_entries: 5, //主体页数
+									ellipse_text : "***" ,
+									prev_text: "上一页",
+									next_text: "下一页",
 //								prev_show_always:false,
 //								next_show_always:false,
-								callback: function(page_index, jq){
-									listStudents(page_index+1,PAGE_SIZE);
-								},
-							});
-						}
+									callback: function(page_index, jq){
+										var postData = [];
+										$("#group-tbody input:checked").each(function(){
+											var entry = {
+												stuId : $(this).attr('name'),
+												groupId : $(this).val()
+											}
+											console.log(entry);
+											postData.push(entry);
+										});
+//						//提交保存
+										$.post("__URL__/groupinput",{
+													postData : postData
+												},
+												function(data){
+													btn.removeClass('disabled');//解锁按钮
+													console.log("post success");
+												});
+										listStudents(page_index+1,PAGE_SIZE);
+									},
+								});
+							}
 
-					}
+						}
 				);
 			}
 			initPagination();
@@ -143,57 +160,59 @@
 </head>
 
 <body>
-		<!-- 头部 -->
-		<div class="header">
-        <div class="container">
-            <h2 style="font-size:50px"><span class="glyphicon glyphicon-home"></span>欢迎您系统</h2>
-            <p style="color:#ddd;font-size:24px; line-height:48px">欢迎您</p>
-        </div>
-    </div>
+<!-- 头部 -->
+<div class="header">
+	<div class="container">
+		<h2 style="font-size:50px"><span class="glyphicon glyphicon-home"></span>答辩学生分组</h2>
+		<p style="color:#ddd;font-size:24px; line-height:48px"><a href="__URL__/../teachingsecretary">退出</a></p>
+	</div>
+</div>
 
-		<!-- 主体内容 -->
-		<div class="container login-wrapper">
-			<div class="panel panel-default bg-transparent">
-					<div class="panel-heading bg-transparent">
-							<h3 class="panel-title">分组</h3>
-					</div>
-					<div class="panel-body bg-transparent">
-							<table class="table table-hover">
-								<caption>分组表格布局</caption>
-								<thead>
-									<tr>
-										<th>学生</th>
-										<th>小组</th>
-									</tr>
-								</thead>
-								<tbody id = "group-tbody">
+<!-- 主体内容 -->
+<div class="container login-wrapper">
+	<div class="panel panel-default bg-transparent">
+		<div class="panel-heading bg-transparent">
+			<h3 class="panel-title">答辩学生分组详情</h3>
+		</div>
+		<div class="panel-body bg-transparent">
+			<table class="table table-hover">
+				<caption>请选择学生分组</caption>
+				<thead>
+				<tr>
+					<th>学生</th>
+					<th>小组</th>
+				</tr>
+				</thead>
+				<tbody id = "group-tbody">
 
-								</tbody>
-							</table>
-							<div class="text-center">
-								<button class="btn btn-success" id="save-btn">保存分组</button>
-							</div>
-							<div id="pagination" class="pagination text-center center-block">
+				</tbody>
+			</table>
+			<div class="text-center">
+				<button class="btn btn-success" id="save-btn"><span class="glyphicon glyphicon-ok"></span> 保存分组</button>
+				<a href="__URL__/teachergrouping"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> 返回教师分组</button></a>
+			</div>
+			<div id="pagination" class="pagination text-center center-block">
 
-							</div>
-					</div>
 			</div>
 		</div>
+	</div>
+</div>
 </body>
 
 <script id="group-template" type="text/template">
 	{@each students as stu, index}
-		<tr>
-			<td>${stu.stuname}</td>
-			<td>
-				<div>
-					{@each groups as group}
-						<label class="checkbox-inline">
-							<input type="radio" name="${stu.stuid}" value="${group.groupId}" {@if stu.groupid == group.groupId } checked {@/if}/>${group.groupName}
-						</label>
-					{@/each}
-				</div>
-			</td>
-		</tr>
+	<tr>
+		<td>${stu.stuname}</td>
+		<td>
+			<div>
+				{@each groups as group}
+				<label class="checkbox-inline">
+					<input type="radio" name="${stu.stuid}" value="${group.groupId}" {@if stu.groupid == group.groupId } checked {@/if}/>${group.groupName}
+				</label>
+				{@/each}
+			</div>
+		</td>
+	</tr>
 	{@/each}
 </script>
+</html>

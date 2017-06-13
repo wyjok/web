@@ -23,14 +23,14 @@ class DefensegroupingController extends Controller{
             //$this->assign('teacherid',$teacherid);
             //$this->assign('login', $login);
             //$this->assign('title','欢迎'.$login.stuname.'登录');
-            if(!($login[teacherrole]/10000%10))
+            if(!($login[teacherrole]/1000%10))
                 $this->quit();
-            //dump($login);
+            ////dump($login);
 
             $teacherdefenseassign = M('teacherdefenseassign');
 
             $groupnum=$teacherdefenseassign->distinct(true)->field('defensegroupnum')->count();
-            //echo $teacherdefenseassign->_sql();
+            ////echo $teacherdefenseassign->_sql();
 
             if($groupnum==0)
                 redirect(U('/home/Defensegrouping/teachergrouping'),2, '请先进行检查组老师分组');
@@ -41,7 +41,7 @@ class DefensegroupingController extends Controller{
             $stulist = $stuinfo->select();
             //$this->assign('stulist',$stulist);
 
-            //dump($stulist);
+            ////dump($stulist);
 
             $this->display();
             //redirect(U('/home/Defensegrouping/index'),0, '请先进行检查组老师分组');
@@ -52,37 +52,37 @@ class DefensegroupingController extends Controller{
     public function groupinput(){
         $stuinfo = M('studefenseassign');
         $stugroup=(array)($_POST['postData']);
-        //dump($stugroup);
+        ////dump($stugroup);
         foreach ($stugroup as $stu){
             $temp['stuid']=$stu['stuId'];
             $del[]=$stu['stuId'];
             $temp['defensegroupnum']=$stu['groupId'];
             $inputlist[]= $temp;
         }
-        //dump($inputlist);
+        ////dump($inputlist);
 
         $stuinfo->delete(implode(',',$del));
-//        echo $stuinfo->_sql();
+//        //echo $stuinfo->_sql();
         $stuinfo->addAll($inputlist);
     }
     public function groupinginfo(){
         $stuinfo = M('stuinfo');
 
-//        dump($data);
+//        //dump($data);
 //        print_r($data);
-        //dump($data['page']);
-        //dump($data['size']);
+        ////dump($data['page']);
+        ////dump($data['size']);
         //
         $stulist = $stuinfo->page($_GET['page'],$_GET['size'])->join('LEFT join studefenseassign ON stuinfo.stuid = studefenseassign.stuid')
             ->field('stuinfo.stuid as stuId,stuinfo.stuname as stuName,studefenseassign.defensegroupnum as groupId')
             ->order('stuinfo.stuid')->select();
 
-        //echo M('stuinfo')->_sql();
+        ////echo M('stuinfo')->_sql();
         $testarr['success']=true;
         $testarr['message']='';
         $testarr['data']=$stulist;
-        //dump($stulist);
-        //echo json_encode($stulist);
+        ////dump($stulist);
+        ////echo json_encode($stulist);
 
         $this->ajaxReturn($testarr,'JSON');
     }
@@ -108,29 +108,31 @@ class DefensegroupingController extends Controller{
         $testarr['success']=true;
         $testarr['message']='';
         $testarr['data']=$groupsetinfo;
-        //echo json_encode($groupsetinfo);
+        ////echo json_encode($groupsetinfo);
         $this->ajaxReturn($testarr,'JSON');
     }
     public function teachergrouping(){
         $teacherdefenseassign = M('teacherdefenseassign');
         $groupnum=0;
         $groupnum=$teacherdefenseassign->distinct(true)->field('defensegroupnum')->select();
-        dump($groupnum);
+        //dump($groupnum);
         if($groupnum!=0){
             $teacherinfo = M('teacherinfo');
             foreach($groupnum as $number){
-                dump($number);
+                //dump($number);
                 $teacherids=$teacherdefenseassign->where('defensegroupnum='.$number['defensegroupnum'])->getField('teacherid',true);
-                echo M('teacherdefenseassign')->_sql();
+                //echo M('teacherdefenseassign')->_sql();
 
-                dump($teacherids);
+                //dump($teacherids);
 
-                $groupteachername[$number['defensegroupnum']] = $teacherinfo->where(array('teacherid'=>array('in',$teacherids)))->getField('teachername',true);
-                echo M('teacherinfo')->_sql();
-                dump($groupteachername);
+                //$groupteachername[$number['defensegroupnum']] = $teacherinfo->where(array('teacherid'=>array('in',$teacherids)))->getField('teachername',true);
+                $groupteachername[$number['defensegroupnum']] = implode('|',$teacherinfo->where(array('teacherid'=>array('in',$teacherids)))->getField('teachername',true));
+
+                //echo M('teacherinfo')->_sql();
+                //dump($groupteachername);
 
             }
-            dump($groupteachername);
+            //dump($groupteachername);
             $this->assign('groupteachername',$groupteachername);
             $this->assign('number',6);
         }
@@ -139,9 +141,9 @@ class DefensegroupingController extends Controller{
     public function teachergroupinput(){
 
         for($i=1;;$i++){
-            dump($_POST['g'.$i]);
-            if(!empty($_POST['g'.$i])){
-                $groupteacher[$i]=explode('|',$_POST['g'.$i]);
+            //dump($_POST['group'.$i]);
+            if(!empty($_POST['group'.$i])){
+                $groupteacher[$i]=explode('|',$_POST['group'.$i]);
 
             }
             else{
@@ -149,7 +151,7 @@ class DefensegroupingController extends Controller{
             }
 
         }
-        dump($groupteacher);
+        //dump($groupteacher);
         $teacherinfo=M('teacherinfo');
         $t=0;
         $teacherdefenseassign=M('teacherdefenseassign');
@@ -161,15 +163,15 @@ class DefensegroupingController extends Controller{
                 $st['teachername']=$name;
 
                 $tid=$teacherinfo->where($st)->find();
-                dump($tid);
-                echo M('teacherinfo')->_sql();
+                //dump($tid);
+                //echo M('teacherinfo')->_sql();
                 if($tid['teacherid']==0){
                     $da['teachername']= $st['teachername'];
-                    $da['teacherrole']='1000000';
+                    $da['teacherrole']='100000';
                     $teacherinfo->create($da);
                     $tid['teacherid']=$teacherinfo->add($da);
-                    echo 's';
-                    dump($tid);
+                    //echo 's';
+                    //dump($tid);
                 }
                 if($tid['teacherrole']/100000%10!=1){
                     $da1['teachername']= $st['teachername'];
@@ -177,8 +179,8 @@ class DefensegroupingController extends Controller{
                     $da1['teacherid']=$tid['teacherid'];
                     $teacherinfo->create($da1);
                     $teacherinfo->save($da1);
-                    echo 'u';
-                    dump($tid);
+                    //echo 'u';
+                    //dump($tid);
                 }
 
                 $dataList[$t++]['teacherid'] =$tid['teacherid'];
@@ -187,7 +189,7 @@ class DefensegroupingController extends Controller{
             }
         }
 
-        dump($dataList);
+        //dump($dataList);
         $dedensegroup=M('defensegroup');
         $dedensegroup->where('1')->delete();
         for($i=0;$i<$k;$i++){
@@ -196,12 +198,13 @@ class DefensegroupingController extends Controller{
         }
         //$teacherdefenseassign->where('1')->delete();
         $teacherdefenseassign->addAll($dataList);
-        echo M('teacherinfo')->_sql();
-        redirect(U('/home/Defensegrouping/'),2, '请先进行检查组老师分组');
+        //echo M('teacherinfo')->_sql();
+        $this->success('教师分组完成，进入学生分组',U('/home/Defensegrouping/'),1);
+
     }
 
     function quit(){
         session(null);//清空所有session信息
-        redirect(U('/home/teacherlogin/'),0, '重新登录');
+        $this->success('重新登录',U('/home/teacherlogin/'),1);
     }
 }

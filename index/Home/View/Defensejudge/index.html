@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>答辩检查总览</title>
+	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="__PUBLIC__/js/juicer-min.js"></script>
+	<!--<link rel="stylesheet" href="__PUBLIC__/css/pagination.css">-->
+	<!--<script src="__PUBLIC__/js/jquery.pagination.js"></script>-->
+	<style>
+		body{
+			background:url(__PUBLIC__/img/login-bg.jpg) no-repeat;
+			background-size: cover;
+		}
+		.header{
+			padding:15px 0;
+			color:#fff;
+			background-color:#847575;
+			background: rgba(0,0,0,0.30);
+		}
+		.login-wrapper{
+			max-width: 62%;
+			min-width: 40%;
+			padding-top: 50px;
+		}
+		.bg-transparent{
+			background-color:#FFF;
+			background: rgba(255,255,255,0.3);
+			border: none;
+		}
+		.checkbox-inline{
+			padding-left :0px;
+		}
+	</style>
+
+	<script>
+		$(function(){
+
+
+		});
+	</script>
+</head>
+
+<body>
+<!-- 头部 -->
+<div class="header">
+	<div class="container">
+		<h2 style="font-size:50px"><span class="glyphicon glyphicon-home"></span>答辩检查总览</h2>
+		<p style="color:#ddd;font-size:24px; line-height:48px"><a href="__URL__/../teacherindex">返回</a></p>
+	</div>
+</div>
+
+<!-- 主体内容 -->
+<div class="container login-wrapper">
+	<div class="panel panel-default bg-transparent">
+		<div class="panel-heading bg-transparent">
+			<h3 class="panel-title">组内答辩学生评价表</h3>
+		</div>
+		<div class="panel-body bg-transparent">
+			<table class="table table-hover">
+				<caption>请选学生进行评价</caption>
+				<thead>
+				<tr>
+					<th>学生姓名</th>
+					<th>通过情况</th>
+					<th>评价</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<foreach name="list" item="v" key="i">
+
+					<if  condition="$v['judgement'] eq null" >
+						<tr class="warning">
+							<td>{$v.stuname} </td>
+
+							<td>未评价</td>
+							<td title="{$v['judgement']['comment']}"></td>
+							<td><a href="__URL__/judging/stuid/{$v.stuid}" title="{$v.stuname}答辩情况">评价</a></td>
+						</tr>
+						<else />
+
+						<switch name="v['judgement']['permission']" >
+
+							<case value="1">
+								<tr class="success">
+									<td>{$v.stuname}</td>
+									<td>优</td>
+									<td title="{$v['judgement']['comment']}"><script type="text/javascript"> document.write("{$v['judgement']['comment']}".slice(0,30)); </script></td>
+									<td><a href="__URL__/judging/stuid/{$v.stuid}" title="{$v.stuname}答辩情况">修改</a></td>
+								</tr>
+							</case>
+
+							<case value="2">
+								<tr class="success">
+									<td>{$v.stuname}</td>
+									<td>良</td>
+									<td title="{$v['judgement']['comment']}"><script type="text/javascript"> document.write("{$v['judgement']['comment']}".slice(0,30)); </script></td>
+									<td><a href="__URL__/judging/stuid/{$v.stuid}" title="{$v.stuname}答辩情况">修改</a></td>
+								</tr>
+							</case>
+
+							<case value="3">
+								<tr class="success">
+									<td>{$v.stuname}</td>
+									<td>中</td>
+									<td title="{$v['judgement']['comment']}"><script type="text/javascript"> document.write("{$v['judgement']['comment']}".slice(0,30)); </script></td>
+									<td><a href="__URL__/judging/stuid/{$v.stuid}" title="{$v.stuname}答辩情况">修改</a></td>
+								</tr>
+							</case>
+
+							<case value="4">
+								<tr class="danger">
+									<td>{$v.stuname}</td>
+									<td>差</td>
+									<td title="{$v['judgement']['comment']}"><script type="text/javascript"> document.write("{$v['judgement']['comment']}".slice(0,30)); </script></td>
+									<td><a href="__URL__/judging/stuid/{$v.stuid}" title="{$v.stuname}答辩情况">修改</a></td>
+								</tr>
+							</case>
+
+						</switch>
+					</if>
+					<!--<if  condition="$v['judgement'] eq null" >-->
+
+						<!--<tr class="warning">-->
+							<!--<td>{$v.stuname} </td>-->
+							<!--<td>未评价</td>-->
+							<!--<td title="{$v['judgement']['comment']}">{$v['judgement']['comment']}</td>-->
+							<!--<td><a href="__URL__/judging/stuid/{$v.stuid}" title="{$v.stuname}答辩情况">去评价</a></td>-->
+						<!--</tr>-->
+
+						<!--<elseif  condition="$v['judgement']['permission'] eq 0" />-->
+						<!--<tr class="danger">-->
+							<!--<td>{$v.stuname}</td>-->
+							<!--<td>未通过</td>-->
+							<!--<td title="{$v['judgement']['comment']}">{$v['judgement']['comment']}</td>-->
+							<!--<td><a href="__URL__/judging/stuid/{$v.stuid}" title="{$v.stuname}答辩情况">去评价</a></td>-->
+						<!--</tr>-->
+
+						<!--<else />-->
+						<!--<tr class="success">-->
+							<!--<td>{$v.stuname}</td>-->
+							<!--<td>通过</td>-->
+							<!--<td title="{$v['judgement']['comment']}">{$v['judgement']['comment']}</td>-->
+							<!--<td><a href="__URL__/judging/stuid/{$v.stuid}" title="{$v.stuname}答辩情况">去评价</a></td>-->
+						<!--</tr>-->
+
+					<!--</if>-->
+
+
+
+
+
+				</foreach>
+
+				<!--<tr class="warning">-->
+				<!--<td>姓名</td>-->
+				<!--<td>通过</td>-->
+				<!--<td title="好哈哈好哈哈哈哈好哈哈哈哈哈好哈哈哈哈好哈哈哈好哈哈哈哈好哈哈哈哈好哈哈哈哈">好哈哈好哈哈哈哈好哈哈哈哈哈好哈哈哈哈好哈哈哈好哈哈哈哈好哈哈哈哈好哈哈哈哈</td>-->
+				<!--<td><a>去评价</a></td>-->
+				<!--</tr>-->
+				<!--<tr class="success">-->
+				<!--<td>姓名</td>-->
+				<!--<td>通过</td>-->
+				<!--<td title="好哈哈好哈哈哈哈好哈哈哈哈哈好哈哈哈哈好哈哈哈好哈哈哈哈好哈哈哈哈好哈哈哈哈">好哈哈好哈哈哈哈好哈哈哈哈哈好哈哈哈哈好哈哈哈好哈哈哈哈好哈哈哈哈好哈哈哈哈</td>-->
+				<!--<td><a>去评价</a></td>-->
+				<!--</tr>-->
+				<!--<tr class="danger">-->
+				<!--<td>姓名</td>-->
+				<!--<td>通过</td>-->
+				<!--<td>好哈哈哈哈哈好哈哈哈哈哈哈哈好哈哈哈哈好哈哈哈哈好哈哈哈哈</td>-->
+				<!--<td><a>去评价</a></td>-->
+				<!--</tr>-->
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>分组</title>
@@ -39,7 +40,7 @@
 			var PAGE_SIZE = 10;//默认每页显示的数据量
 			var groups = [];
 			function listGroups(){
-				$.ajax("endgrouping/groupsetinfo",{
+				$.ajax("__URL__/groupsetinfo",{
 					async : false,
 					method : 'GET',
 					dataType : 'json'
@@ -61,7 +62,7 @@
 			function listStudents(page, size) {
 				page = page || 1;
 				size = size || PAGE_SIZE;
-				$.get("endgrouping/groupinginfo",{
+				$.get("__URL__/groupinginfo",{
 						page:page,
 						size:size
 					},
@@ -113,7 +114,7 @@
 			*初始化分页
 			*/
 			function initPagination(){
-				$.get("endgrouping/totalNum",
+				$.get("__URL__/totalNum",
 					function(data){
 						console.log(data);
 						if(data.success){
@@ -128,6 +129,23 @@
 //								prev_show_always:false,
 //								next_show_always:false,
 								callback: function(page_index, jq){
+									var postData = [];
+									$("#group-tbody input:checked").each(function(){
+										var entry = {
+											stuId : $(this).attr('name'),
+											groupId : $(this).val()
+										}
+										console.log(entry);
+										postData.push(entry);
+									});
+//						//提交保存
+									$.post("endgrouping/groupinput",{
+												postData : postData
+											},
+											function(data){
+												btn.removeClass('disabled');//解锁按钮
+												console.log("post success");
+											});
 									listStudents(page_index+1,PAGE_SIZE);
 								},
 							});
@@ -145,8 +163,8 @@
 		<!-- 头部 -->
 		<div class="header">
         <div class="container">
-            <h2 style="font-size:50px"><span class="glyphicon glyphicon-home"></span>欢迎您系统</h2>
-            <p style="color:#ddd;font-size:24px; line-height:48px">欢迎您</p>
+            <h2 style="font-size:50px"><span class="glyphicon glyphicon-home"></span>结题学生分组</h2>
+            <p style="color:#ddd;font-size:24px; line-height:48px"><a href="__URL__/../teacherindex">退出</a> </p>
         </div>
     </div>
 
@@ -154,11 +172,11 @@
 		<div class="container login-wrapper">
 			<div class="panel panel-default bg-transparent">
 					<div class="panel-heading bg-transparent">
-							<h3 class="panel-title">分组</h3>
+							<h3 class="panel-title">结题学生分组详情</h3>
 					</div>
 					<div class="panel-body bg-transparent">
 							<table class="table table-hover">
-								<caption>分组表格布局</caption>
+								<caption>请选择学生分组</caption>
 								<thead>
 									<tr>
 										<th>学生</th>
@@ -170,7 +188,8 @@
 								</tbody>
 							</table>
 							<div class="text-center">
-								<button class="btn btn-success" id="save-btn">保存分组</button>
+								<button class="btn btn-success" id="save-btn"><span class="glyphicon glyphicon-ok"></span> 保存分组</button>
+								<a href="__URL__/teachergrouping"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> 返回教师分组</button></a>
 							</div>
 							<div id="pagination" class="pagination text-center center-block">
 
@@ -196,3 +215,4 @@
 		</tr>
 	{@/each}
 </script>
+</html>

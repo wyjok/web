@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<foreach name="list" item="v" key="i">
+    <label>{$v.stuname}  </label>
+    <if  condition="$v['judgement'] eq null" ><a href="__URL__/judging/stuid/{$v.stuid}" title="{$v.stuname}结题情况">未评价</a>
+        <elseif  condition="$v['judgement']['permission'] eq 0" /><a href="__URL__/judging/stuid/{$v.stuid}" title="{$v.stuname}结题情况">结题未通过</a>
+        <else /><a href="__URL__/judging/stuid/{$v.stuid}" title="{$v.stuname}结题情况">结题通过</a>
+    </if>
+    </br>
+</foreach>
+
+</body>
+</html>

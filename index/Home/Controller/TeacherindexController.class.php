@@ -14,33 +14,78 @@ class TeacherindexController extends Controller {
             $this->assign('login', $login);
             //$this->assign('title','欢迎'.$login.stuname.'登录');
 
-            dump($login);
+            //dump($login);
             //输出老师角色对应操作（1为导师，1 _ 为工业秘书，1 _ _ 为结题检查组，1_ _ _ 为教学秘书，1 _ _ _ _为审阅人，
             //1 _ _ _ _ _为答辩组）
-            if( (int)($login[teacherrole])%10) {
-                $this->assign('operation1', '<a href="' . U('/home/Stuendrecord/') . '" title="导师主页">导师主页</a>');
-                if( (int)($login[teacherrole])/10%10){
-                    $this->assign('operation2', '<a href="' . U('/home/endgrouping/') . '" title="工业实践秘书主页">工业实践秘书主页</a>');
-                }
-                if( (int)($login[teacherrole])/100%10){
-                    $this->assign('operation3', '<a href="' . U('/home/endjudge/') . '" title="结题检查组主页">结题检查组主页</a>');
-                }
-                if( (int)($login[teacherrole])/1000%10){
-                    $this->assign('operation4', '<a href="' . U('/home/reviewgrouping/') . '" title="教学秘书主页">教学秘书主页</a><a href="' . U('/home/defensegrouping/') . '" title="教学秘书主页">答辩</a>');
-                }
-                if( (int)($login[teacherrole])/10000%10){
-                    $this->assign('operation5', '<a href="' . U('/home/Stuendrecord/') . '" title="论文审阅人主页">论文审阅人主页</a>');
-                }
-                if( (int)($login[teacherrole])/100000%10){
-                    $this->assign('operation6', '<a href="' . U('/home/Stuendrecord/') . '" title="论文答辩检查组主页">论文答辩检查组主页</a>');
-                }
+//            if( (int)($login[teacherrole])%10) {
+//                $this->assign('operation1', '<a href="' . U('/home/Stuendrecord/') . '" title="导师主页">导师主页</a>');
+//                if( (int)($login[teacherrole])/10%10){
+//                    $this->assign('operation2', '<a href="' . U('/home/endgrouping/') . '" title="工业实践秘书主页">工业实践秘书主页</a>');
+//                }
+//                if( (int)($login[teacherrole])/100%10){
+//                    $this->assign('operation3', '<a href="' . U('/home/endjudge/') . '" title="结题检查组主页">结题检查组主页</a>');
+//                }
+//                if( (int)($login[teacherrole])/1000%10){
+//                    $this->assign('operation4', '<a href="' . U('/home/reviewgrouping/') . '" title="教学秘书主页">教学秘书主页</a><a href="' . U('/home/defensegrouping/') . '" title="教学秘书主页">答辩</a>');
+//                }
+//                if( (int)($login[teacherrole])/10000%10){
+//                    $this->assign('operation5', '<a href="' . U('/home/Stuendrecord/') . '" title="论文审阅人主页">论文审阅人主页</a>');
+//                }
+//                if( (int)($login[teacherrole])/100000%10){
+//                    $this->assign('operation6', '<a href="' . U('/home/Stuendrecord/') . '" title="论文答辩检查组主页">论文答辩检查组主页</a>');
+//                }
+//
+//            }
 
-            }
 
             $this->display();
         }else  {
             $this->error('您好，请先登录！！！',U('/home/teacherlogin/'));
         }
+    }
+
+    public function teacherfunction(){
+        if(session('?teacherid')) {
+            $teacherid = session('teacherid');
+            $teacherinfo = M('teacherinfo');
+            $login = $teacherinfo->find($teacherid);
+
+            if( (int)($login[teacherrole])%10) {
+                $package['name']='导师主页';
+                $package['url']=U('/home/mentorindex/');
+                $infoset[]=$package;
+            }
+            if( (int)($login[teacherrole])/10%10){
+                $package['name']='工业实践秘书主页';
+                $package['url']=U('/home/endgrouping/');
+                $infoset[]=$package;            }
+            if( (int)($login[teacherrole])/100%10){
+                $package['name']='结题检查组主页';
+                $package['url']=U('/home/endjudge/');
+                $infoset[]=$package;            }
+            if( (int)($login[teacherrole])/1000%10){
+                $package['name']='教学秘书主页';
+                $package['url']=U('/home/teachingsecretary/') ;
+                $infoset[]=$package;            }
+            if( (int)($login[teacherrole])/10000%10){
+                $package['name']='论文审阅人主页';
+                $package['url']=U('/home/Stuendrecord/') ;
+                $infoset[]=$package;            }
+            if( (int)($login[teacherrole])/100000%10){
+                $package['name']='论文答辩检查组主页';
+                $package['url']=U('/home/defensejudge/');
+                $infoset[]=$package;            }
+
+
+            $testarr['success']=true;
+            $testarr['message']='';
+            $testarr['data']=$infoset;
+            //echo json_encode($groupsetinfo);
+            $this->ajaxReturn($testarr,'JSON');
+        }
+
+
+
     }
 
     function quit(){

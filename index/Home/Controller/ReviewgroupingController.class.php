@@ -25,12 +25,12 @@ class ReviewgroupingController extends Controller
             //$this->assign('title','欢迎'.$login.stuname.'登录');
             if(!($login[teacherrole]/1000%10))
                 $this->quit();
-            //dump($login);
+            ////dump($login);
 
             $teacherassign = M('teacherreviewassign');
 
             $groupnum=$teacherassign->select();
-            //echo $teacherassign->_sql();
+            ////echo $teacherassign->_sql();
 
             if($groupnum==null)
                 redirect(U('/home/Reviewgrouping/teachergrouping'),2, '请先进行检查组老师分组');
@@ -41,7 +41,7 @@ class ReviewgroupingController extends Controller
 //            $stulist = $stuinfo->select();
             //$this->assign('stulist',$stulist);
 
-            //dump($stulist);
+            ////dump($stulist);
 
             $this->display();
             //redirect(U('/home/Endgrouping/index'),0, '请先进行检查组老师分组');
@@ -52,37 +52,37 @@ class ReviewgroupingController extends Controller
     public function groupinput(){
         $stuassign = M('stureviewassign');
         $stugroup=(array)($_POST['postData']);
-        //dump($stugroup);
+        ////dump($stugroup);
         foreach ($stugroup as $stu){
             $temp['stuid']=$stu['stuId'];
             $del[]=$stu['stuId'];
             $temp['teacherid']=$stu['groupId'];
             $inputlist[]= $temp;
         }
-        //dump($inputlist);
+        ////dump($inputlist);
 
         $stuassign->delete(implode(',',$del));
-//        echo $stuinfo->_sql();
+//        //echo $stuinfo->_sql();
         $stuassign->addAll($inputlist);
     }
     public function groupinginfo(){
         $stuinfo = M('stuinfo');
 
-//        dump($data);
+//        //dump($data);
 //        print_r($data);
-        //dump($data['page']);
-        //dump($data['size']);
+        ////dump($data['page']);
+        ////dump($data['size']);
         //
         $stulist = $stuinfo->page($_GET['page'],$_GET['size'])->join('LEFT join stureviewassign ON stuinfo.stuid = stureviewassign.stuid')
             ->field('stuinfo.stuid as stuId,stuinfo.stuname as stuName,stureviewassign.teacherid as groupId')
             ->order('stuinfo.stuid')->select();
 
-        //echo M('stuinfo')->_sql();
+        ////echo M('stuinfo')->_sql();
         $testarr['success']=true;
         $testarr['message']='';
         $testarr['data']=$stulist;
-        //dump($stulist);
-        //echo json_encode($stulist);
+        ////dump($stulist);
+        ////echo json_encode($stulist);
 
         $this->ajaxReturn($testarr,'JSON');
     }
@@ -108,27 +108,28 @@ class ReviewgroupingController extends Controller
         $testarr['success']=true;
         $testarr['message']='';
         $testarr['data']=$groupsetinfo;
-        //echo json_encode($groupsetinfo);
+        ////echo json_encode($groupsetinfo);
         $this->ajaxReturn($testarr,'JSON');
     }
     public function teachergrouping(){
         $teacherassign = M('teacherreviewassign');
-        $groupnum=0;
+        //$groupnum=0;
         $groupnum=$teacherassign->distinct(true)->field('teacherid')->select();
-        dump($groupnum);
+        //dump($groupnum);
+        $t=1;
         if($groupnum!=0){
             $teacherinfo = M('teacherinfo');
             foreach($groupnum as $number){
-                dump($number);
+                ////dump($number);
 
 
 
-                $groupteachername[] = $teacherinfo->find($number['teacherid']);
-                echo M('teacherinfo')->_sql();
-                dump($groupteachername);
+                $groupteachername[$t++] = $teacherinfo->find($number['teacherid']);
+                //echo M('teacherinfo')->_sql();
+                //dump($groupteachername);
 
             }
-            dump($groupteachername);
+            //dump($groupteachername);
             $this->assign('groupteachername',$groupteachername);
            // $this->assign('number',6);
         }
@@ -137,9 +138,9 @@ class ReviewgroupingController extends Controller
     public function teachergroupinput(){
 
         for($i=1;;$i++){
-            dump($_POST['g'.$i]);
-            if(!empty($_POST['g'.$i])){
-                $groupteacher[$i][]=$_POST['g'.$i];
+            //dump($_POST['group'.$i]);
+            if(!empty($_POST['group'.$i])){
+                $groupteacher[$i][]=$_POST['group'.$i];
 
             }
             else{
@@ -147,7 +148,7 @@ class ReviewgroupingController extends Controller
             }
 
         }
-        dump($groupteacher);
+        //dump($groupteacher);
         $teacherinfo=M('teacherinfo');
         $t=0;
         $teacherassign=M('teacherreviewassign');
@@ -157,15 +158,15 @@ class ReviewgroupingController extends Controller
                 $st['teachername']=$name;
 
                 $tid=$teacherinfo->where($st)->find();
-                dump($tid);
-                echo M('teacherinfo')->_sql();
+                //dump($tid);
+                //echo M('teacherinfo')->_sql();
                 if($tid['teacherid']==0){
                     $da['teachername']= $st['teachername'];
-                    $da['teacherrole']='0010000';
+                    $da['teacherrole']='10000';
                     $teacherinfo->create($da);
                     $tid['teacherid']=$teacherinfo->add($da);
-                    echo 's';
-                    dump($tid);
+                    //echo 's';
+                    //dump($tid);
                 }
                 if($tid['teacherrole']/10000%10!=1){
                     $da1['teachername']= $st['teachername'];
@@ -173,18 +174,21 @@ class ReviewgroupingController extends Controller
                     $da1['teacherid']=$tid['teacherid'];
                     $teacherinfo->create($da1);
                     $teacherinfo->save($da1);
-                    echo 'u';
-                    dump($tid);
+                    //echo 'u';
+                    //dump($tid);
                 }
 
                 $dataList[$t++]['teacherid'] =$tid['teacherid'];
 
             }
         }
-        dump($dataList);
+        //dump($dataList);
         $teacherassign->where('1')->delete();
-        $teacherassign->addAll($dataList);
-        echo M('teacherinfo')->_sql();
+        $result=$teacherassign->addAll($dataList);
+        //echo M('teacherinfo')->_sql();
+        if($result>0){
+            $this->success('教师分组完成，进入学生分组',U('/home/reviewgrouping/'),1);
+        }
     }
 
     function quit(){

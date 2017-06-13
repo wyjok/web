@@ -1,61 +1,161 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>登录</title>
+  <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+  <!-- <script src="https://unpkg.com/vue@2.0.1/dist/vue.js"></script> -->
+  <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+  $(function(){
+
+
+    /*初始化删除按钮*/
+    function initRemoveBtn(){
+      $(".js-remove").click(function() {
+
+        if($(".form-group").length <=2){
+          return false;
+        }
+        $(this).parentsUntil("form").filter(".form-group")
+                .hide(300).queue(function (){
+          $(this).remove();//删除输入框
+          updateGroupName();
+          $(this).dequeue();
+        });
+      });
+    }
+    //默认执行
+    initRemoveBtn();
+
+    /*初始化新增分组按钮*/
+    $("#add-group-btn").click(function(event) {
+      var newInput = $("#new-group-template").html();
+      var newInputVar = $(newInput).hide();
+      var operationDiv =$("#operation-div").detach();
+      $("form").append(newInputVar).append(operationDiv);
+      newInputVar.show(300);
+      initRemoveBtn();
+      updateGroupName();
+    });
+
+    /*更新组名*/
+    function updateGroupName(){
+      $(".form-group .js-label-group-name").each(function(index, el) {
+        $(this).text("第"+(index+1)+"组");
+      });
+    }
+
+  });
+
+  /* 验证输入*/
+  function validation(){
+    $(".form-group .js-input-group-name").each(function(index, el) {
+      $(this).attr("name","group"+(index+1));
+    });
+    return true;
+  }
+
+  // 显示警告提示
+  function showWaring(info,focusInput){
+    $("#warning").text(info);
+    $("#warning").slideDown(400);//显示
+    focusInput.focus();//输入框获得焦点
+    // 自动消失
+    setTimeout(function(){
+      $("#warning").slideUp(500);
+    },4000);
+  }
+
+  </script>
+
+  <script id="new-group-template" type="text/template">
+    <div class="form-group">
+      <label class="col-sm-2 control-label js-label-group-name">项目名称</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control js-input-group-name" name="" placeholder="请输入组内老师姓名，多个老师请用“|”分隔"/>
+      </div>
+      <div class="col-sm-1">
+        <label class="control-label">
+          <button type="button" class="glyphicon glyphicon-remove-circle js-remove close"></button>
+        </label>
+      </div>
+    </div>
+  </script>
+
+  <style>
+  body{
+    background:url(__PUBLIC__/img/login-bg.jpg) no-repeat;
+    background-size: cover;
+  }
+  .header{
+    padding:15px 0;
+    color:#fff;
+    background-color:#847575;
+    background: rgba(0,0,0,0.30);
+  }
+  .login-wrapper{
+    width:750px;
+    padding-top:120px;
+  }
+  .bg-transparent{
+    background-color:#FFF;
+    background: rgba(255,255,255,0.08);
+    border: none;
+  }
+  /*.glyphicon{
+  vertical-align: text-top;
+  }*/
+  .mr15{
+    margin-right: 15px;
+  }
+
+  </style>
 </head>
 <body>
+  <!-- 头部 -->
+  <div class="header">
+    <div class="container">
+      <h2 style="font-size:50px"><span class="glyphicon glyphicon-home"></span>结题分组系统</h2>
+      <p style="color:#ddd;font-size:24px; line-height:48px"><a href="__URL__/../teachingsecretary">退出</a> </p>
+    </div>
+  </div>
+  <!-- 主体内容 -->
+  <div class="container login-wrapper" >
+    <div class="panel panel-default bg-transparent" >
+      <div class="panel-heading bg-transparent">
+        <h3 class="panel-title"><span class="glyphicon glyphicon-th"></span> 结题信息项填写</h3>
+      </div>
+      <div class="panel-body bg-transparent">
+        <div class="alert alert-danger text-center" id="warning" style="display:none"></div>
+        <form class="form-horizontal" role="form" action="__URL__/teachergroupinput" method="POST" onsubmit="return validation()">
 
-<p>分组情况</p>
+				  <foreach name="groupteachername" item="v" key="i">
+						<div class="form-group">
+							<label class="col-sm-2 control-label js-label-group-name">第{$i}组</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control js-input-group-name" name="group"+{$i} value="{$v[teachername]}"/>
+							</div>
+							<div class="col-sm-1">
+								<label class="control-label">
+                  <button type="button" class="glyphicon glyphicon-remove-circle js-remove close"></button>
+                </label>
+							</div>
+						</div>
+					</foreach>
 
+          <div id="operation-div" class="form-group">
+            <div style="text-align:center">
+              <button type="button" class="btn btn-default" id="add-group-btn"><span class="glyphicon glyphicon-plus"></span> 新增分组</button>
+              <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> 提交</button>
+              <a href="__URL__"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> 放弃修改返回</button></a>
+            </div>
+          </div>
 
-
-<foreach name="groupteachername" item="v" key="i">
-    <label>第{$i+1}组  </label>
-    <foreach name="v" item="value" key="j">
-
-             <{$value}>
-
-    </foreach>
-    </br>
-</foreach>
-
-<form action="__URL__/teachergroupinput" method="POST">
-
-    <p>
-        <label>第1组</label>
-        <input class="text-input" type="text"  name="g1"/>
-    </p>
-    <!--<p>-->
-        <!--<label>第2组</label>-->
-        <!--<input class="text-input" type="text"  name="g2"/>-->
-    <!--</p>-->
-    <!--<p>-->
-        <!--<label>第3组</label>-->
-        <!--<input class="text-input" type="text"  name="g3"/>-->
-    <!--</p>-->
-    <!--<p>-->
-        <!--<label>第4组</label>-->
-        <!--<input class="text-input" type="text"  name="g4"/>-->
-    <!--</p>-->
-    <p id="btn">
-        <input class="button" type="submit" value="分组"  />
-    </p>
-
-</form>
-<p>
-    <button onclick="a()">增加分组</button>
-</p>
-<script type="text/javascript">
-    var i=2;
-    function a(){
-        var d1 = document.getElementById('btn');
-        var aText = "<p>   <label>第"+i+"组</label>   <input class='text-input' type='text'  name='g"+i+++"'/>  </p>";
-        d1.insertAdjacentHTML('beforebegin', aText);
-        //document.getElementById("b").innerHTML(aText);
-    }
-</script>
-
-</body>
+        </form>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

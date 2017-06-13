@@ -1,0 +1,159 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title>{$title}</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<form action="__URL__/stuendrecord" enctype="multipart/form-data" method="post" >-->
+
+    <!--<h1>结题信息项填写</h1>-->
+    <!--<div class="clear"></div>-->
+
+    <!--<p>-->
+        <!--<label>项目名称</label>-->
+        <!--<input class="text-input" type="text" value="{$stuendprojname}"  name="stuendprojname"/>-->
+    <!--</p>-->
+
+    <!--<div class="clear"></div>-->
+
+    <!--<p>-->
+        <!--<label>结题报告题目</label>-->
+        <!--<input class="text-input" type="text" value="{$stuendreportname}" name="stuendreportname" />-->
+    <!--</p>-->
+
+    <!--<div class="clear"></div>-->
+
+    <!--<p>-->
+        <!--<label>上一次提交的文档</label>-->
+        <!--{$stuendfilelocate}-->
+
+    <!--</p>-->
+
+    <!--<div class="clear"></div>-->
+
+    <!--<p>-->
+        <!--<label>论文初稿文档</label>-->
+
+        <!--<input type="file"  name="document"/>-->
+    <!--</p>-->
+
+    <!--<div class="clear"></div>-->
+    <!--<p>-->
+        <!--<input class="button" type="submit" value="提交" />-->
+    <!--</p>-->
+
+<!--</form>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- <script src="https://unpkg.com/vue@2.0.1/dist/vue.js"></script> -->
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function(){
+            $("#upload-btn").click(function(event) {
+                $("#upload-input").trigger("click");
+            });
+
+
+            var fileName = $("#label-last-file").text();
+            if(fileName && fileName.trim()){
+                $("#lable-file").text("上一次提交的文档");
+                $("#upload-btn").text("更新文档");
+                $(".js-save-icon").show();
+            }else{
+                $("#lable-file").text("上传文档");
+                $("#upload-btn").text("上传文档");
+                $("#upload-btn").addClass('btn-block');
+                $(".js-file-info").hide();
+            }
+
+        });
+    </script>
+
+    <style>
+        body{
+            background:url(__PUBLIC__/img/login-bg.jpg) no-repeat;
+            background-size: cover;
+        }
+        .header{
+            padding:15px 0;
+            color:#fff;
+            background-color:#847575;
+            background: rgba(0,0,0,0.30);
+        }
+        .login-wrapper{
+            width:750px;
+            padding-top:120px;
+        }
+        .bg-transparent{
+            background-color:#FFF;
+            background: rgba(255,255,255,0.08);
+            border: none;
+        }
+        /*.glyphicon{
+                  vertical-align: text-top;
+          }*/
+        .mr15{
+            margin-right: 15px;
+        }
+    </style>
+</head>
+<body>
+<!-- 头部 -->
+<div class="header">
+    <div id="vm" class="container">
+        <h2 style="font-size:50px"><span class="glyphicon glyphicon-home"></span>DD系统</h2>
+        <p style="color:#ddd;font-size:24px; line-height:48px">欢迎您</p>
+    </div>
+</div>
+<!-- 主体内容 -->
+<div class="container login-wrapper" >
+    <div class="panel panel-default bg-transparent" >
+        <div class="panel-heading bg-transparent">
+            <h3 class="panel-title"><span class="glyphicon glyphicon-pencil"></span> 结题信息项填写</h3>
+        </div>
+        <div class="panel-body bg-transparent">
+            <form id="login-form" class="form-horizontal" role="form" action="__URL__/stuendrecord" enctype="multipart/form-data" method="post">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">项目名称</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" value="{$stuendprojname}"  name="stuendprojname"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lastname" class="col-sm-3 control-label">结题报告题目</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" value="{$stuendreportname}" name="stuendreportname"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lastname" class="col-sm-3 control-label" id="lable-file">上一次提交的文档</label>
+                    <div class="col-sm-9">
+                        <label class="control-label js-file-info">
+                            <a href="{$stuendfilelocate}" id="label-last-file" title="{$filetitle}">{$filename}</a>
+                            <span class="glyphicon glyphicon-save"></span>
+                        </label>
+                        <button type="button" class="btn btn-default" id="upload-btn">上传文档</button>
+                        <input type="file" class="form-control hidden" id="upload-input" name="document"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div style="text-align:center">
+                        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> 提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
