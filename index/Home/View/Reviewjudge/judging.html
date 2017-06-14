@@ -1,146 +1,154 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html;charset=utf-8">
-    <title>审阅检查评价</title>
-    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-    <!-- <script src="https://unpkg.com/vue@2.0.1/dist/vue.js"></script> -->
-    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script>
-        $(function(){
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>学生初稿评价</title>
+  <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+  <!-- <script src="https://unpkg.com/vue@2.0.1/dist/vue.js"></script> -->
+  <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+  $(function(){
 
-            $(".radio-span").click(function(event) {
-                $(".radio.on.focus").removeClass('on').removeClass('focus');
-                $(this).children('.radio').addClass('on').addClass('focus');
+    $(".radio-span").click(function(event) {
+      $(".radio.on.focus input").prop("checked",false);
+      $(".radio.on.focus").removeClass('on').removeClass('focus');
+      $(this).children('.radio').addClass('on').addClass('focus');
+      $(this).children('.radio').children("input:radio").prop('checked', true);
 
-            });
-        });
+    });
+  });
 
-        /* 验证输入*/
-        function validation(){
-            var commentVar =  $("textarea");
-            var permitionVar = $("input:checked");
-            if(!commentVar.val().trim()){
-                showWaring("请输入评语！",commentVar);
-                return false;
-            }
-            if(!permitionVar.length){
-                showWaring("请选择审阅通过情况！",commentVar);
-                return false;
-            }
-            return true;
-        }
+  /* 验证输入*/
+  function validation(){
+    var commentVar =  $("textarea");
+    var permitionVar = $("input:checked");
+    if(!commentVar.val().trim()){
+      showWaring("请输入评语！",commentVar);
+      return false;
+    }
+    if(!permitionVar.length){
+      showWaring("请选择结题通过情况！",commentVar);
+      return false;
+    }
+    return true;
+  }
 
-        // 显示警告提示
-        function showWaring(info,focusInput){
-            $("#warning").text(info);
-            $("#warning").slideDown(400);//显示
-            focusInput.focus();//输入框获得焦点
-            // 自动消失
-            setTimeout(function(){
-                $("#warning").slideUp(500);
-            },4000);
-        }
+  // 显示警告提示
+  function showWaring(info,focusInput){
+    $("#warning").text(info);
+    $("#warning").slideDown(400);//显示
+    focusInput.focus();//输入框获得焦点
+    // 自动消失
+    setTimeout(function(){
+      $("#warning").slideUp(500);
+    },4000);
+  }
 
-    </script>
+  </script>
 
-    <style>
-        body{
-            background:url(__PUBLIC__/img/login-bg.jpg) no-repeat;
-            background-size: cover;
-        }
-        .header{
-            padding:15px 0;
-            color:#fff;
-            background-color:#847575;
-            background: rgba(0,0,0,0.30);
-        }
-        .login-wrapper{
-            width:750px;
-            padding-top:120px;
-        }
-        .bg-transparent{
-            background-color:#FFF;
-            background: rgba(255,255,255,0.08);
-            border: none;
-        }
+  <style>
+  body{
+    background:url(__PUBLIC__/img/login-bg.jpg) no-repeat;
+    background-size: cover;
+  }
+  .header{
+    padding:15px 0;
+    color:#fff;
+    background-color:#847575;
+    background: rgba(0,0,0,0.30);
+  }
+  .login-wrapper{
+    width:750px;
+    padding-top:120px;
+  }
+  .bg-transparent{
+    background-color:#FFF;
+    background: rgba(255,255,255,0.08);
+    border: none;
+  }
 
-        /*单选按钮样式*/
-        .radio-span{
-            cursor:pointer;
-        }
+  /*单选按钮样式*/
+  .radio-span{
+    cursor:pointer;
+  }
 
-        .form-horizontal .radio{
-            display: inline-block;
-            position: relative;
-            margin: 3px;
-            min-height: 24px;
-            height: 25px;
-            width: 25px;
-            border-radius: 100%;
-            vertical-align: middle;
-            cursor:pointer;
-            background-color: #cfcfcf;
-            box-shadow: 0 1px 15px rgba(0, 0, 0, 0.1) inset, 0 1px 4px rgba(0, 0, 0, 0.1) inset, 1px -1px 2px rgba(0, 0, 0, 0.1);
-        }
-        .form-horizontal .radio.on {
-            background-color: #05abe0;
-        }
-        .radio .pip{
-            position: absolute;
-            top :5px;
-            left :5px;
-            width: 15px;
-            height: 15px;
-            box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.3), 0 0 1px rgba(255, 255, 255, 0.4) inset;
-            border-radius: 100%;
-            background-color: #ddd;
-            transform: scale(0, 0);
-            transition: all 0.2s ease;
-        }
-        .radio.on>span.pip{
-            transform: scale(1,1);
-        }
+  .form-horizontal .radio{
+    display: inline-block;
+    position: relative;
+    margin: 3px;
+    min-height: 24px;
+    height: 25px;
+    width: 25px;
+    border-radius: 100%;
+    vertical-align: middle;
+    cursor:pointer;
+    background-color: #cfcfcf;
+    box-shadow: 0 1px 15px rgba(0, 0, 0, 0.1) inset, 0 1px 4px rgba(0, 0, 0, 0.1) inset, 1px -1px 2px rgba(0, 0, 0, 0.1);
+  }
+  .form-horizontal .radio.on {
+    background-color: #05abe0;
+}
+  .radio .pip{
+    position: absolute;
+    top :5px;
+    left :5px;
+    width: 15px;
+    height: 15px;
+    box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.3), 0 0 1px rgba(255, 255, 255, 0.4) inset;
+    border-radius: 100%;
+    background-color: #ddd;
+    transform: scale(0, 0);
+    transition: all 0.2s ease;
+  }
+  .radio.on>span.pip{
+    transform: scale(1,1);
+  }
 
-        .status{
-            vertical-align: middle;
-            font-size: larger;
-        }
+  .status{
+    vertical-align: middle;
+    font-size: larger;
+  }
 
-    </style>
+  </style>
 </head>
 <body>
-<!-- 头部 -->
-<div class="header">
+  <!-- 头部 -->
+  <div class="header">
     <div class="container">
-        <h2 style="font-size:50px"><span class="glyphicon glyphicon-home"></span>审阅评价</h2>
-        <p style="color:#ddd;font-size:24px; line-height:48px">学生{$stuname}审阅评价详情</p>
+      <h2 style="font-size:50px"><span class="glyphicon glyphicon-home"></span>初稿检查评价</h2>
+      <p style="color:#ddd;font-size:24px; line-height:48px">学生{$stuname}初稿检查评价详情</p>
     </div>
-</div>
-<!-- 主体内容 -->
-<div class="container login-wrapper">
+  </div>
+  <!-- 主体内容 -->
+  <div class="container login-wrapper">
     <div class="panel panel-default bg-transparent">
-        <div class="panel-heading bg-transparent">
-            <h3 class="panel-title"><span class="glyphicon glyphicon-th"></span> 审阅评价填写</h3>
-        </div>
-        <div class="panel-body bg-transparent">
-            <div class="alert alert-danger text-center" id="warning" style="display:none"></div>
-            <form class="form-horizontal" role="form" action="__URL__/judgementinput/stuid/{$stuid}" method="POST" onsubmit="return validation()">
+      <div class="panel-heading bg-transparent">
+        <h3 class="panel-title"><span class="glyphicon glyphicon-th"></span> {$proj}</h3>
+      </div>
+      <div class="panel-heading bg-transparent">
+        <h3 class="panel-title"><span class="glyphicon glyphicon-th"></span> {$reason}</h3>
+      </div>
+      <div class="panel-heading bg-transparent">
+        <h3 class="panel-title"><span class="glyphicon glyphicon-th"></span> {$time}<a href="{$download}">下载文件</a></h3>
+      </div>
+      <div class="panel-body bg-transparent">
+        <div class="alert alert-danger text-center" id="warning" style="display:none"></div>
+        <form class="form-horizontal" role="form" action="__URL__/judgementinput/stuid/{$stuid}" method="POST" onsubmit="return validation()">
 
-                <div class="form-group text-center">
+          <div class="form-group text-center">
 
             <span class="radio-span">
                <!-- focus on -->
               <label class="radio {$focus1}">
                 <span class="pip"></span>
-                  <!-- checked -->
+                <!-- checked -->
                 <input type="radio" name="permission" value="1" {$checked1} class="hidden">
               </label>
               <span class="glyphicon glyphicon-ok status">通过</span>
             </span>
 
-                    <span class="radio-span">
+            <span class="radio-span">
               <label class="radio {$focus0}">
                 <span class="pip"></span>
                 <input type="radio" name="permission" value="0" {$checked0} class="hidden">
@@ -148,22 +156,22 @@
               <span class="glyphicon glyphicon-remove status">不通过</span>
             </span>
 
-                </div>
-                <div class="form-group">
-                    <textarea class="form-control" rows="8"   name="comment" placeholder="请输入评价{$teacher}">{$comment}</textarea>
-                </div>
+          </div>
+					<div class="form-group">
+						<textarea class="form-control" rows="8"   name="comment" placeholder="请输入评价{$teacher}">{$comment}</textarea>
+					</div>
 
-                <div id="operation-div" class="form-group">
-                    <div style="text-align:center">
-                        <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> 提交</button>
-                        <a href="__URL__"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> 放弃提交返回</button></a>
+          <div id="operation-div" class="form-group">
+            <div style="text-align:center">
+              <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> 提交</button>
+              <a href="__URL__"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> 放弃提交返回</button></a>
 
-                    </div>
-                </div>
+            </div>
+          </div>
 
-            </form>
-        </div>
+        </form>
+      </div>
     </div>
-</div>
+  </div>
 </body>
 </html>

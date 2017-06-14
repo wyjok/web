@@ -11,9 +11,10 @@
         $(function(){
 
             $(".radio-span").click(function(event) {
+                $(".radio.on.focus input").prop("checked",false);
                 $(".radio.on.focus").removeClass('on').removeClass('focus');
                 $(this).children('.radio').addClass('on').addClass('focus');
-
+                $(this).children('.radio').children("input:radio").prop('checked', true);
             });
         });
 

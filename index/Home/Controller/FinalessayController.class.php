@@ -9,7 +9,7 @@
 namespace Home\Controller;
 use Think\Controller;
 
-class StuendrecordController extends Controller
+class FinalessayController extends Controller
 {
     public function index()
     {
@@ -17,18 +17,17 @@ class StuendrecordController extends Controller
             $stuid = session('stuid');
             $stuinfo = M('stuinfo');
             $userinfo = $stuinfo->find($stuid);
-            $stuendrecord =M('stuendrecord');
-            $userrecord = $stuendrecord->find($stuid);
+            $stuessay =M('finalessay');
+            $userrecord = $stuessay->find($stuid);
             if($userrecord!=null) {
-
                 $stuendprojname = $userrecord['stuendprojname'];
                 $stuendreportname = $userrecord['stuendreportname'];
                 $this->assign('stuendprojname', $stuendprojname);
                 $this->assign('stuendreportname', $stuendreportname);
 
-               // $stuendfilelocate = '<a href="'.'../../uploads/'.'endreport/'.$stuid.'/'.$userrecord['stuendfilelocate'].'" title="文档下载">下载</a>';
-                $stuendfilelocate = '../../uploads/'.'endreport/'.$stuid.'/'.$userrecord['stuendfilelocate'];
-                $encode = mb_detect_encoding($stuendfilelocate, array("ASCII",'UTF-8',"GB2312","GBK",'BIG5'));
+                // $stuendfilelocate = '<a href="'.'../../uploads/'.'endreport/'.$stuid.'/'.$userrecord['stuendfilelocate'].'" title="文档下载">下载</a>';
+                $stuendfilelocate = '../../uploads/'.'finalessay/'.$stuid.'/'.$userrecord['stuendfilelocate'];
+                $encode = mb_detect_encoding($stuendreportname, array("ASCII",'UTF-8',"GB2312","GBK",'BIG5'));
                 //dump($encode);
                 $filename=$userrecord['stuendfilelocate'];
                 if(mb_strlen($filename,$encode)>30){
@@ -39,7 +38,6 @@ class StuendrecordController extends Controller
                 $this->assign('filename', $filename);
                 //配置页面显示内容
                 $this->assign('filetitle', $userrecord['stuendfilelocate']);
-                //$this->assign('stuid', $userinfo[stuname].$stuid);
 
             }else{
                 $stuendfilelocate = '未提交过文档';
@@ -53,10 +51,9 @@ class StuendrecordController extends Controller
         }
 
     }
-    function stuendrecord()
+    function stuessay()
     {
         if(session('?stuid')) {
-
             $stuendprojname=$_POST['stuendprojname'];
             $stuendreportname=$_POST['stuendreportname'];
             $stuid = session('stuid');
@@ -69,10 +66,10 @@ class StuendrecordController extends Controller
                 $upload->maxSize   =     3145728 ;
                 $upload->exts      =     array('docx', 'doc', 'pdf');
                 $upload->rootPath  =     './uploads/';
-                $upload->savePath  =     'endreport/';
+                $upload->savePath  =     'finalessay/';
                 $upload->replace   =   true;
-               // dump(date("YmdHis", time()));
-                $upload->saveName  = '结题验收表'.$stuid.$userinfo[stuname].'-'.date("YmdHis", time());
+                //dump(date("YmdHis", time()));
+                $upload->saveName  =  '论文修改版'.$stuid.$userinfo[stuname].'-'.date("YmdHis", time());
 
                 $stuid = session('stuid');
 
@@ -84,7 +81,7 @@ class StuendrecordController extends Controller
                 }else{
                     $stuid = session('stuid');
 
-                    $Form = M('stuendrecord');
+                    $Form = M('finalessay');
                     // 要修改的数据对象属性赋值
                     $data['stuid'] = $stuid;
                     $data['stuendprojname'] = $stuendprojname;
@@ -96,13 +93,12 @@ class StuendrecordController extends Controller
 //                    dump($info['document']['savename']);
                     //'./uploads/endreport/'.$stuid.'/'.
                     $data['stuendfilelocate'] = $info['document']['savename'];
-                   // $result=$Form->where("stuid=$stuid")->save($data);
-                    if($Form->find($stuid)){
-                        $result=$Form->save($data);
-                    }else{
-                        $result=$Form->add($data);
-                    }
-
+                    // $result=$Form->where("stuid=$stuid")->save($data);
+                   if($Form->find($stuid)){
+                       $result=$Form->save($data);
+                   }else{
+                       $result=$Form->add($data);
+                   }
 //                    dump($result);
 //                    dump($data);
                     $this->success('upload done！','',1);

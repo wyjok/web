@@ -31,10 +31,10 @@ class LoginController extends Controller
                 $url=U('/home/index');
                 redirect($url,0, '跳转中...');
             }else{
-                $this->error('用户名或密码错误');
+                $this->error('用户名或密码错误',U('/home/login/'));
             }
         }else{
-            $this->error('验证码错误');
+            $this->error('验证码错误',U('/home/login/'));
         }
 
     }

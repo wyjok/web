@@ -16,12 +16,12 @@ class EndgroupingController extends Controller {
             //$this->assign('title','欢迎'.$login.stuname.'登录');
             if(!($login[teacherrole]/10%10))
                 $this->quit();
-            //dump($login);
+            ////dump($login);
 
             $teacherendassign = M('teacherendassign');
 
             $groupnum=$teacherendassign->distinct(true)->field('endgroupnum')->select();
-            //echo $teacherendassign->_sql();
+            ////echo $teacherendassign->_sql();
 
             if($groupnum==null)
                 redirect(U('/home/Endgrouping/teachergrouping'),2, '请先进行检查组老师分组');
@@ -32,7 +32,7 @@ class EndgroupingController extends Controller {
             $stulist = $stuinfo->select();
             //$this->assign('stulist',$stulist);
 
-            //dump($stulist);
+            ////dump($stulist);
 
             $this->display();
             //redirect(U('/home/Endgrouping/index'),0, '请先进行检查组老师分组');
@@ -43,37 +43,37 @@ class EndgroupingController extends Controller {
     public function groupinput(){
         $stuinfo = M('stuendassign');
         $stugroup=(array)($_POST['postData']);
-        //dump($stugroup);
+        ////dump($stugroup);
         foreach ($stugroup as $stu){
             $temp['stuid']=$stu['stuId'];
             $del[]=$stu['stuId'];
             $temp['endgroupnum']=$stu['groupId'];
             $inputlist[]= $temp;
         }
-        //dump($inputlist);
+        ////dump($inputlist);
 
         $stuinfo->delete(implode(',',$del));
-//        echo $stuinfo->_sql();
+//        //echo $stuinfo->_sql();
         $stuinfo->addAll($inputlist);
     }
     public function groupinginfo(){
         $stuinfo = M('stuinfo');
 
-//        dump($data);
+//        //dump($data);
 //        print_r($data);
-        //dump($data['page']);
-        //dump($data['size']);
+        ////dump($data['page']);
+        ////dump($data['size']);
         //
         $stulist = $stuinfo->page($_GET['page'],$_GET['size'])->join('LEFT join stuendassign ON stuinfo.stuid = stuendassign.stuid')
             ->field('stuinfo.stuid as stuId,stuinfo.stuname as stuName,stuendassign.endgroupnum as groupId')
             ->order('stuinfo.stuid')->select();
 
-        //echo M('stuinfo')->_sql();
+        ////echo M('stuinfo')->_sql();
         $testarr['success']=true;
         $testarr['message']='';
         $testarr['data']=$stulist;
-        //dump($stulist);
-        //echo json_encode($stulist);
+        ////dump($stulist);
+        ////echo json_encode($stulist);
 
         $this->ajaxReturn($testarr,'JSON');
     }
@@ -100,29 +100,29 @@ class EndgroupingController extends Controller {
         $testarr['message']='';
         $testarr['data']=$groupsetinfo;
 
-        //echo json_encode($groupsetinfo);
+        ////echo json_encode($groupsetinfo);
         $this->ajaxReturn($testarr,'JSON');
     }
     public function teachergrouping(){
         $teacherendassign = M('teacherendassign');
         $groupnum=0;
         $groupnum=$teacherendassign->distinct(true)->field('endgroupnum')->select();
-        //dump($groupnum);
+        ////dump($groupnum);
         if($groupnum!=0){
             $teacherinfo = M('teacherinfo');
             foreach($groupnum as $number){
-                //dump($number);
+                ////dump($number);
                 $teacherids=$teacherendassign->where('endgroupnum='.$number['endgroupnum'])->getField('teacherid',true);
-               // echo M('teacherendassign')->_sql();
+               // //echo M('teacherendassign')->_sql();
 
-                //dump($teacherids);
+                ////dump($teacherids);
 
                 $groupteachername[$number['endgroupnum']] = implode('|',$teacherinfo->where(array('teacherid'=>array('in',$teacherids)))->getField('teachername',true));
-                //echo M('teacherinfo')->_sql();
-                //dump($groupteachername);
+                ////echo M('teacherinfo')->_sql();
+                ////dump($groupteachername);
 
             }
-            //dump($groupteachername);
+            ////dump($groupteachername);
             $this->assign('groupteachername',$groupteachername);
             $this->assign('number',6);
         }
@@ -131,7 +131,7 @@ class EndgroupingController extends Controller {
     public function teachergroupinput(){
 
         for($i=1;;$i++){
-            dump($_POST['group'.$i]);
+            //dump($_POST['group'.$i]);
             if(!empty($_POST['group'.$i])){
                 $groupteacher[$i]=explode('|',$_POST['group'.$i]);
 
@@ -141,7 +141,7 @@ class EndgroupingController extends Controller {
             }
 
         }
-        dump($groupteacher);
+        //dump($groupteacher);
         $teacherinfo=M('teacherinfo');
         $t=0;
         $teacherendassign=M('teacherendassign');
@@ -151,15 +151,15 @@ class EndgroupingController extends Controller {
                 $st['teachername']=$name;
 
                 $tid=$teacherinfo->where($st)->find();
-                dump($tid);
-                echo M('teacherinfo')->_sql();
+                //dump($tid);
+                //echo M('teacherinfo')->_sql();
                 if($tid['teacherid']==0){
                     $da['teachername']= $st['teachername'];
                     $da['teacherrole']='0000100';
                     $teacherinfo->create($da);
                     $tid['teacherid']=$teacherinfo->add($da);
-                   echo 's';
-                    dump($tid);
+                   //echo 's';
+                    //dump($tid);
                 }
                 if($tid['teacherrole']/100%10!=1){
                     $da1['teachername']= $st['teachername'];
@@ -167,8 +167,8 @@ class EndgroupingController extends Controller {
                     $da1['teacherid']=$tid['teacherid'];
                     $teacherinfo->create($da1);
                     $teacherinfo->save($da1);
-                    echo 'u';
-                    dump($tid);
+                    //echo 'u';
+                    //dump($tid);
                 }
 
                 $dataList[$t++]['teacherid'] =$tid['teacherid'];
@@ -176,7 +176,7 @@ class EndgroupingController extends Controller {
 
             }
         }
-       // dump($dataList);
+       // //dump($dataList);
 
         $endgroup=M('endgroup');
         $endgroup->where('1')->delete();
@@ -189,7 +189,7 @@ class EndgroupingController extends Controller {
         $result=$teacherendassign->addAll($dataList);
 
 
-//        echo M('teacherinfo')->_sql();
+//        //echo M('teacherinfo')->_sql();
         if($result>0){
             $this->success('教师分组完成，进入学生分组',U('/home/endgrouping/'),1);
         }

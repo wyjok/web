@@ -12,6 +12,7 @@ class TeacherindexController extends Controller {
             $login = $teacherinfo->find($teacherid);
             $this->assign('teacherid',$teacherid);
             $this->assign('login', $login);
+
             //$this->assign('title','欢迎'.$login.stuname.'登录');
 
             //dump($login);
@@ -69,7 +70,7 @@ class TeacherindexController extends Controller {
                 $infoset[]=$package;            }
             if( (int)($login[teacherrole])/10000%10){
                 $package['name']='论文审阅人主页';
-                $package['url']=U('/home/Stuendrecord/') ;
+                $package['url']=U('/home/reviewjudge/') ;
                 $infoset[]=$package;            }
             if( (int)($login[teacherrole])/100000%10){
                 $package['name']='论文答辩检查组主页';

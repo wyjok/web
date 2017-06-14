@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
-  <title>结题检查评价</title>
+  <title>学生初稿评价</title>
   <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
   <!-- <script src="https://unpkg.com/vue@2.0.1/dist/vue.js"></script> -->
@@ -11,8 +11,10 @@
   $(function(){
 
     $(".radio-span").click(function(event) {
+      $(".radio.on.focus input").prop("checked",false);
       $(".radio.on.focus").removeClass('on').removeClass('focus');
       $(this).children('.radio').addClass('on').addClass('focus');
+      $(this).children('.radio').children("input:radio").prop('checked', true);
 
     });
   });
@@ -114,15 +116,21 @@
   <!-- 头部 -->
   <div class="header">
     <div class="container">
-      <h2 style="font-size:50px"><span class="glyphicon glyphicon-home"></span>结题评价</h2>
-      <p style="color:#ddd;font-size:24px; line-height:48px">学生{$stuname}结题评价详情</p>
+      <h2 style="font-size:50px"><span class="glyphicon glyphicon-home"></span>初稿检查评价</h2>
+      <p style="color:#ddd;font-size:24px; line-height:48px">学生{$stuname}初稿检查评价详情</p>
     </div>
   </div>
   <!-- 主体内容 -->
   <div class="container login-wrapper">
     <div class="panel panel-default bg-transparent">
       <div class="panel-heading bg-transparent">
-        <h3 class="panel-title"><span class="glyphicon glyphicon-th"></span> 结题评价填写</h3>
+        <h3 class="panel-title"><span class="glyphicon glyphicon-th"></span> {$proj}</h3>
+      </div>
+      <div class="panel-heading bg-transparent">
+        <h3 class="panel-title"><span class="glyphicon glyphicon-th"></span> {$reason}</h3>
+      </div>
+      <div class="panel-heading bg-transparent">
+        <h3 class="panel-title"><span class="glyphicon glyphicon-th"></span> {$time}<a href="{$download}">下载文件</a></h3>
       </div>
       <div class="panel-body bg-transparent">
         <div class="alert alert-danger text-center" id="warning" style="display:none"></div>

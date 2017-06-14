@@ -62,6 +62,13 @@ class EndjudgeController extends Controller{
         $teacherendassign=M('teacherendassign');
         $stuendjudgement=M('stuendjudgement');
 
+        $stuessay=M('stuendrecord')->find($stuid);
+        $stuendfilelocate = $stuid.'/../../../../../../uploads/'.'endreport/'.$stuid.'/'.$stuessay['stuendfilelocate'];
+        $this->assign('proj', "项目名称：".$stuessay[stuendprojname]);
+        $this->assign('reason',"改动简述：". $stuessay[stuendreportname]);
+        $this->assign('time', "提交时间：".$stuessay['time']);
+        $this->assign('download', $stuendfilelocate);
+
         $teachergroup=$teacherendassign->find($teacherid);
         $stu=$stuendassign->find($stuid);
         $stuinfo=M('stuinfo')->find($stuid);
@@ -88,7 +95,7 @@ class EndjudgeController extends Controller{
             $teacher=$teacherinfo->find($judgement['teacherid']);
             $this->assign('comment',$judgement['comment']);
 
-            $this->assign('teacher','(上一次评价老师为'.$teacher['teachername'].')');
+            $this->assign('teacher','上一次评价老师：'.$teacher['teachername']);
         }
         $this->display();
     }
@@ -123,10 +130,10 @@ class EndjudgeController extends Controller{
         echo $stuendjudgement->_sql();
         if($result){
             //设置成功后跳转页面的地址，默认的返回页面是$_SERVER['HTTP_REFERER']
-            $this->success('新增成功', U('/home/endjudge/'));
+            $this->success('提交成功', U('/home/endjudge/'));
         } else {
             //错误页面的默认跳转页面是返回前一页，通常不需要设置
-            $this->error('新增失败',U('/home/endjudge/'));
+            $this->error('提交失败',U('/home/endjudge/'));
         }
     }
 }

@@ -11,8 +11,10 @@
   $(function(){
 
     $(".radio-span").click(function(event) {
+      $(".radio.on.focus input").prop("checked",false);
       $(".radio.on.focus").removeClass('on').removeClass('focus');
       $(this).children('.radio').addClass('on').addClass('focus');
+      $(this).children('.radio').children("input:radio").prop('checked', true);
 
     });
   });
@@ -122,7 +124,13 @@
   <div class="container login-wrapper">
     <div class="panel panel-default bg-transparent">
       <div class="panel-heading bg-transparent">
-        <h3 class="panel-title"><span class="glyphicon glyphicon-th"></span> 结题评价填写</h3>
+        <h3 class="panel-title"><span class="glyphicon glyphicon-th"></span> {$proj}</h3>
+      </div>
+      <div class="panel-heading bg-transparent">
+        <h3 class="panel-title"><span class="glyphicon glyphicon-th"></span> <a href="{$download}">下载文件</a></h3>
+      </div>
+      <div class="panel-heading bg-transparent">
+        <h3 class="panel-title"><span class="glyphicon glyphicon-th"></span> {$teacher}</h3>
       </div>
       <div class="panel-body bg-transparent">
         <div class="alert alert-danger text-center" id="warning" style="display:none"></div>

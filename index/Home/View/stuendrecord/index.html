@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
-	<title>登录</title>
+	<title>结题信息提交</title>
 	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
 	<!-- <script src="https://unpkg.com/vue@2.0.1/dist/vue.js"></script> -->
@@ -94,8 +94,8 @@
   <!-- 头部 -->
 		<div class="header">
 			<div id="vm" class="container">
-          <h2 style="font-size:50px"><span class="glyphicon glyphicon-home"></span>DD系统</h2>
-          <p style="color:#ddd;font-size:24px; line-height:48px">欢迎您</p>
+          <h2 style="font-size:50px"><span class="glyphicon glyphicon-home"></span>结题信息提交</h2>
+          <p style="color:#ddd;font-size:24px; line-height:48px"><a href="__URL__/../index">退出</a></p>
         </div>
     </div>
     <!-- 主体内容 -->
@@ -113,10 +113,10 @@
   					 		      <input type="text" class="form-control" id="input-project-name" value="{$stuendprojname}" name="stuendprojname" data-toggle="tooltip" title=""/>
   					 		    </div>
   					 		  </div>
-					   <div class="form-group">
-						   <label for="lastname" class="col-sm-3 control-label">结题报告题目</label>
+					   <div class="form-group" hidden="true">
+						   <label for="lastname" class="col-sm-3 control-label">结题验收表题目</label>
 						   <div class="col-sm-9">
-							   <input type="text" class="form-control" id="input-report-name" value="{$stuendreportname}" name="stuendreportname"/>
+							   <input type="text" class="form-control" id="input-report-name" value="{$stuid}+结题验收表" name="stuendreportname" hidden="true"/>
 						   </div>
 					   </div>
 					   <div class="form-group">

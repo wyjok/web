@@ -1,15 +1,152 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title>欢迎{$login.stuname}同学登录</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<p>你的学号是{$stuid}<a href="__URL__/quit" title="退出">退出</a> </p>-->
+
+<!--<h1>{$operation} </h1>-->
+<!--<h1>{$operation1}</h1>-->
+<!--<h1>{$operation2}</h1>-->
+
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>欢迎{$login.stuname}同学登录</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="__PUBLIC__/js/juicer-min.js"></script>
+
+    <style>
+        body{
+            background:url(__PUBLIC__/img/login-bg.jpg) no-repeat;
+            background-size: cover;
+        }
+        .header{
+            padding:15px 0;
+            color:#fff;
+            background-color:#847575;
+            background: rgba(0,0,0,0.30);
+        }
+        .login-wrapper{
+            max-width: 52%;
+            min-width: 40%;
+            padding-top: 50px;
+        }
+        .bg-transparent{
+            background-color:#FFF;
+            background: rgba(255,255,255,0.3);
+            border: none;
+        }
+        .checkbox-inline{
+            padding-left :0px;
+        }
+
+        .function-box{
+            display: inline-block;
+            margin:1%;
+            width: 30%;
+            height: 150px;
+            border-radius: 2%;
+            line-height: 5;
+            box-shadow: 1px 1px 30px 1px rgba(60,60,60,0.5) ;
+            color:white;
+            font-size: 2em;
+            text-align: center;
+            vertical-align: middle;
+            cursor:pointer;
+            background-color: green;
+        }
+        .function-box:hover{
+            box-shadow: 1px 1px 40px 20px rgba(50,50,50,0.0);
+            border: 2px solid wheat;
+            color: white;
+            text-decoration: none;
+        }
+
+        .color1{
+            background-color: #429E7F;
+        }
+        .color2{
+            background-color: #303745;
+        }
+        .color3{
+            background-color: #008BCC;
+        }
+        .color4{
+            background-color: #BD0911;
+        }
+        .color5{
+            background-color: #FF7F27;
+        }
+        .color6{
+            background-color: #A349A4;
+        }
+
+    </style>
+
+    <script>
+        $(function(){
+            var tpl = $("#function-box-template").html();
+            var compiled_tpl = juicer(tpl);
+
+            $.get("index/stufunction",
+                    function(data){
+                        console.log(data);
+                        if(data && data.data){
+                            var functions = data.data;
+                            var colors=[1,2,3,4,5,6];
+                            for(var i=0;i<functions.length;i++){
+                                var num = Math.floor(Math.random()*colors.length);
+                                console.log(num);
+                                var index=colors.splice(num,1)[0];
+                                console.log("color"+colors[index]);
+                                functions[i].bgColor="color"+index;
+                            }
+                            var html =compiled_tpl.render({functions:functions});
+                            $("#function-boxs").html(html);
+                        }
+                    });
+
+        });
+    </script>
 </head>
+
 <body>
-<p>你的学号是{$stuid}<a href="__URL__/quit" title="退出">退出</a> </p>
+<!-- 头部 -->
+<div class="header">
+    <div class="container">
+        <h2 style="font-size:50px"><span class="glyphicon glyphicon-home"></span>学生毕业设计（论文）主页</h2>
+        <p style="color:#ddd;font-size:24px; line-height:48px">学号{$login.stuid}<a href="__URL__/quit" title="退出">退出</a> </p>
+    </div>
+</div>
 
-<h1>{$operation} </h1>
-<h1>{$operation1}</h1>
-<h1>{$operation2}</h1>
-
+<!-- 主体内容 -->
+<div class="container login-wrapper">
+    <div class="panel panel-default bg-transparent">
+        <div class="panel-heading bg-transparent">
+            <h3 class="panel-title">可进行的功能</h3>
+        </div>
+        <div id="function-boxs" class="panel-body bg-transparent">
+            <a class="function-box color1">
+                <span>未获取到可用功能</span>
+            </a>
+        </div>
+    </div>
+</div>
 </body>
 </html>
+<script id="function-box-template" type="text/template">
+    {@each functions as fn}
+    <a class="function-box ${fn.bgColor}" href="${fn.url}">
+        <span>${fn.name}</span>
+    </a>
+    {@/each}
+</script>

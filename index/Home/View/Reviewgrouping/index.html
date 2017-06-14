@@ -128,7 +128,23 @@
 //								prev_show_always:false,
 //								next_show_always:false,
 								callback: function(page_index, jq){
-									listStudents(page_index+1,PAGE_SIZE);
+									var postData = [];
+									$("#group-tbody input:checked").each(function(){
+										var entry = {
+											stuId : $(this).attr('name'),
+											groupId : $(this).val()
+										}
+										console.log(entry);
+										postData.push(entry);
+									});
+//						//提交保存
+									$.post("__URL__/groupinput",{
+												postData : postData
+											},
+											function(data){
+												btn.removeClass('disabled');//解锁按钮
+												console.log("post success");
+											});									listStudents(page_index+1,PAGE_SIZE);
 								},
 							});
 						}

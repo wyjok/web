@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
-	<title>论文初稿提交</title>
+	<title>论文修改版提交</title>
 	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
 	<!-- <script src="https://unpkg.com/vue@2.0.1/dist/vue.js"></script> -->
@@ -23,7 +23,6 @@
        $("#lable-file").text("上传文档");
        $("#upload-btn").text("上传文档");
        $("#upload-btn").addClass('btn-block');
-		 $(".js-change-info").hide();
        $(".js-file-info").hide();
      }
    });
@@ -39,7 +38,7 @@
       return false;
 		}
     if(!reportNameVar.val().trim()){
-      showWaring("请输入改动简述！",reportNameVar);
+      showWaring("请输入修改版论文题目！",reportNameVar);
       return false;
 		}
     if(!fileVar.val().trim()){
@@ -95,33 +94,13 @@
   <!-- 头部 -->
 		<div class="header">
 			<div id="vm" class="container">
-          <h2 style="font-size:50px"><span class="glyphicon glyphicon-home"></span>论文初稿提交</h2>
+          <h2 style="font-size:50px"><span class="glyphicon glyphicon-home"></span>论文修改版提交</h2>
           <p style="color:#ddd;font-size:24px; line-height:48px"><a href="__URL__/../index">退出</a></p>
         </div>
     </div>
     <!-- 主体内容 -->
   		<div class="container login-wrapper" >
   			<div class="panel panel-default bg-transparent" >
-				<if condition="($result[permission] eq 0) AND ($result neq null)">
-					<div class="panel-heading bg-transparent">
-						<h3 class="panel-title"><span class="glyphicon glyphicon-th"></span>导师未批准通过初稿</h3>
-					</div>
-
-				</if>
-				<if condition="$result[permission] eq 1">
-					<div class="panel-heading bg-transparent">
-						<h3 class="panel-title"><span class="glyphicon glyphicon-th"></span>导师批准通过初稿</h3>
-					</div>
-
-				</if>
-
-				<if condition="$result neq null">
-					<div class="panel-heading bg-transparent">
-						<h3 class="panel-title"><span class="glyphicon glyphicon-th"></span>意见：{$result['comment']}</h3>
-					</div>
-
-				</if>
-
   			    <div class="panel-heading bg-transparent">
   			        <h3 class="panel-title"><span class="glyphicon glyphicon-pencil"></span> 论文信息项填写</h3>
   			    </div>
@@ -134,8 +113,8 @@
   					 		      <input type="text" class="form-control" id="input-project-name" value="{$stuendprojname}" name="stuendprojname" data-toggle="tooltip" title=""/>
   					 		    </div>
   					 		  </div>
-					   <div class="form-group js-change-info">
-						   <label for="lastname" class="col-sm-3 control-label">改动简述</label>
+					   <div class="form-group">
+						   <label for="lastname" class="col-sm-3 control-label">论文题目</label>
 						   <div class="col-sm-9">
 							   <input type="text" class="form-control" id="input-report-name" value="{$stuendreportname}" name="stuendreportname"/>
 						   </div>

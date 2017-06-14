@@ -14,27 +14,69 @@ class IndexController extends Controller {
             $this->assign('login', $login);
             //$this->assign('title','欢迎'.$login.stuname.'登录');
 
-            dump($login);
+            //dump($login);
             //输出学生状态对应操作
-            if( (int)($login[stustate])>10) {
-                $this->assign('operation','可进行的操作') ;
-                $this->assign('operation1', '<a href="' . U('/home/Stuendrecord/') . '" title="结题检查">结题信息录入与查看</a>');
-                if( (int)($login[stustate])>100){
-                    $this->assign('operation1', '<a href="' . U('/home/Stuendrecord/') . '" title="结题检查">结题信息查看</a>');
-                    $this->assign('operation2', '<a href="' . U('/home/Stuendrecord/') . '" title="论文答辩">答辩信息录入与查看</a>');
-                }
-                if( (int)($login[stustate])>1000){
-                    $this->assign('operation1', '<a href="' . U('/home/Stuendrecord/') . '" title="结题检查">结题信息查看</a>');
-                    $this->assign('operation2', '<a href="' . U('/home/Stuendrecord/') . '" title="论文答辩">答辩信息查看</a>');
-                }
-
-            }else{
-                $this->assign('operation','未通过开题') ;
-            }
+//            if( (int)($login[stustate])>10) {
+//                $this->assign('operation','可进行的操作') ;
+//                $this->assign('operation1', '<a href="' . U('/home/Stuendrecord/') . '" title="结题检查">结题信息录入与查看</a>');
+//                if( (int)($login[stustate])>100){
+//                    $this->assign('operation1', '<a href="' . U('/home/Stuendrecord/') . '" title="结题检查">结题信息查看</a>');
+//                    $this->assign('operation2', '<a href="' . U('/home/Stuendrecord/') . '" title="论文答辩">答辩信息录入与查看</a>');
+//                }
+//                if( (int)($login[stustate])>1000){
+//                    $this->assign('operation1', '<a href="' . U('/home/Stuendrecord/') . '" title="结题检查">结题信息查看</a>');
+//                    $this->assign('operation2', '<a href="' . U('/home/Stuendrecord/') . '" title="论文答辩">答辩信息查看</a>');
+//                }
+//
+//            }else{
+//                $this->assign('operation','未通过开题') ;
+//            }
 
             $this->display();
         }else  {
             $this->error('您好，请先登录！！！',U('/home/login/'));
+        }
+    }
+
+    public function stufunction()
+    {
+        if (session('?stuid')) {
+            $stuid = session('stuid');
+
+            $stuinfo = M('stuinfo');
+            $login = $stuinfo->find($stuid);
+            $f1=M('stuendjudgement')->find($stuid);
+            $f2=M('mentorresult')->find($stuid);
+            $f3=M('reviewresult')->find($stuid);
+            if ((int)($login[stustate]) > 10 ) {
+                if((int)($f1[permission])!=1){
+                    $package['name'] = '结题信息提交';
+                    $package['url'] = U('/home/Stuendrecord/');
+                    $infoset[] = $package;
+                }
+
+            }else{
+                $package['name'] = '未通过开题';
+                $package['url'] = U('/home/index');
+                $infoset[] = $package;
+            }
+            if ((int)($f1[permission])>0&&(int)($f2[permission])<1) {
+                $package['name'] = '论文信息提交';
+                $package['url'] = U('/home/Stuessay/');
+                $infoset[] = $package;
+            }
+            if ((int)($f3[permission])>0) {
+                $package['name'] = '论文修改版提交';
+                $package['url'] = U('/home/finalessay/');
+                $infoset[] = $package;
+            }
+
+
+            $testarr['success'] = true;
+            $testarr['message'] = '';
+            $testarr['data'] = $infoset;
+            //echo json_encode($groupsetinfo);
+            $this->ajaxReturn($testarr, 'JSON');
         }
     }
 

@@ -32,10 +32,10 @@ class TeacherloginController extends Controller
                 $url=U('/home/Teacherindex');
                 redirect($url,0, '跳转中...');
             }else{
-                $this->error('用户名或密码错误');
+                $this->error('用户名或密码错误',U('/home/teacherlogin/'));
             }
         }else{
-            $this->error('验证码错误');
+            $this->error('验证码错误',U('/home/teacherlogin/'));
         }
 
     }
