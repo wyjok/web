@@ -13,6 +13,13 @@ class EndjudgeController extends Controller{
     public function index()
     {
         if (session('?teacherid')) {
+            $time=date("Y-m-d");
+            $timeset=M('timeset');
+            $set=$timeset->find('1');
+            if($time<$set['starttime2']||$time>$set['finishtime2'])
+            {
+                $this->error('您好，不在可用时间范围内',U('/home/teacherindex/'));
+            }
             $teacherid = session('teacherid');
             $teacherinfo = M('teacherinfo');
             $login = $teacherinfo->find($teacherid);
@@ -55,6 +62,13 @@ class EndjudgeController extends Controller{
 
     public function judging($stuid){
 
+        $time=date("Y-m-d");
+        $timeset=M('timeset');
+        $set=$timeset->find('1');
+     if($time<$set['starttime2']||$time>$set['finishtime2'])
+        {
+            $this->error('您好，不在可用时间范围内',U('/home/teacherindex/'));
+        }
         $teacherid = session('teacherid');
         $teacherinfo = M('teacherinfo');
         $login = $teacherinfo->find($teacherid);
@@ -101,7 +115,13 @@ class EndjudgeController extends Controller{
     }
 
     public function judgementinput($stuid){
-
+        $time=date("Y-m-d");
+        $timeset=M('timeset');
+        $set=$timeset->find('1');
+        if($time<$set['starttime2']||$time>$set['finishtime2'])
+        {
+            $this->error('您好，不在可用时间范围内',U('/home/teacherindex/'));
+        }
         $teacherid = session('teacherid');
         $teacherinfo = M('teacherinfo');
         $login = $teacherinfo->find($teacherid);
@@ -122,12 +142,12 @@ class EndjudgeController extends Controller{
         $data['stuid']=$stuid;
 
 
-        dump($data);
+        //dump($data);
         if($stuendjudgement->find($stuid))
             $result=$stuendjudgement->save($data);
         else
             $result=$stuendjudgement->add($data);
-        echo $stuendjudgement->_sql();
+        //echo $stuendjudgement->_sql();
         if($result){
             //设置成功后跳转页面的地址，默认的返回页面是$_SERVER['HTTP_REFERER']
             $this->success('提交成功', U('/home/endjudge/'));

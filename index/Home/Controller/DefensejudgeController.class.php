@@ -17,6 +17,13 @@ class DefensejudgeController extends Controller
     public function index()
     {
         if (session('?teacherid')) {
+            $time=date("Y-m-d");
+            $timeset=M('timeset');
+            $set=$timeset->find('1');
+            if($time<$set['starttime5']||$time>$set['finishtime5'])
+            {
+                $this->error('您好，不在可用时间范围内',U('/home/teacherindex/'));
+            }
             $teacherid = session('teacherid');
             $teacherinfo = M('teacherinfo');
             $login = $teacherinfo->find($teacherid);

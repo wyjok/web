@@ -13,6 +13,13 @@ class MentorindexController extends Controller{
     public function index()
     {
         if (session('?teacherid')) {
+            $time=date("Y-m-d");
+            $timeset=M('timeset');
+            $set=$timeset->find('1');
+            if($time<$set['starttime3']||$time>$set['finishtime3'])
+            {
+                $this->error('您好，不在可用时间范围内',U('/home/teacherindex/'));
+            }
             $teacherid = session('teacherid');
             $teacherinfo = M('teacherinfo');
             $login = $teacherinfo->find($teacherid);
@@ -59,7 +66,13 @@ class MentorindexController extends Controller{
         $login = $teacherinfo->find($teacherid);
         $mentorresult=M('mentorresult');
         $stuinfo=M('stuinfo')->find($stuid);
-
+        $time=date("Y-m-d");
+        $timeset=M('timeset');
+        $set=$timeset->find('1');
+        if($time<$set['starttime3']||$time>$set['finishtime3'])
+        {
+            $this->error('您好，不在可用时间范围内',U('/home/teacherindex/'));
+        }
 
         if( !(int)($login[teacherrole])%10){
             $this->error('您好，无此项任务',U('/home/teacherindex/'));
@@ -106,7 +119,13 @@ class MentorindexController extends Controller{
         $stuinfo=M('stuinfo');
         $mentorresult=M('mentorresult');
         $stu=$stuinfo->find($stuid);
-
+        $time=date("Y-m-d");
+        $timeset=M('timeset');
+        $set=$timeset->find('1');
+        if($time<$set['starttime3']||$time>$set['finishtime3'])
+        {
+            $this->error('您好，不在可用时间范围内',U('/home/teacherindex/'));
+        }
 
         if( !(int)($login[teacherrole])%10){
             $this->error('您好，无此项任务',U('/home/teacherindex/'));

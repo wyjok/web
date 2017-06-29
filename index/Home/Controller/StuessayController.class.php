@@ -19,6 +19,14 @@ class StuessayController extends Controller
             $userinfo = $stuinfo->find($stuid);
             $stuessay =M('stuessay');
             $userrecord = $stuessay->find($stuid);
+            $time=date("Y-m-d");
+            $timeset=M('timeset');
+            $set=$timeset->find('1');
+            if($time<$set['starttime3']||$time>$set['finishtime3'])
+            {
+                $this->error('您好，不在可用时间范围内',U('/home/index/'));
+            }
+            $this->assign('stuendreportname', '初次提交');
             if($userrecord!=null) {
 
                 $mentorresult =M('mentorresult');
@@ -48,7 +56,7 @@ class StuessayController extends Controller
                 $stuendfilelocate = '未提交过文档';
             }
             $this->assign('stuendfilelocate', $stuendfilelocate);
-            $this->assign('stuendreportname', '初次提交');
+
             //$this->assign('operation','<a href="'.U('/home/').'" title="返回">返回</a>');
             $this->display();
         }else  {

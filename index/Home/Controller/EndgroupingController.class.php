@@ -5,8 +5,17 @@ class EndgroupingController extends Controller {
     public function index(){
         //$this->show('<style type="text/css">*{ padding: 0; margin: 0; } div{ padding: 4px 48px;} body{ background: #fff; font-family: "微软雅黑"; color: #333;font-size:24px} h1{ font-size: 100px; font-weight: normal; margin-bottom: 12px; } p{ line-height: 1.8em; font-size: 36px } a,a:hover{color:blue;}</style><div style="padding: 24px 48px;"> <h1>:)</h1><p>欢迎使用 <b>ThinkPHP</b>！</p><br/>版本 V{$Think.version}</div><script type="text/javascript" src="http://ad.topthink.com/Public/static/client.js"></script><thinkad id="ad_55e75dfae343f5a1"></thinkad><script type="text/javascript" src="http://tajs.qq.com/stats?sId=9347272" charset="UTF-8"></script>','utf-8');
         //$stuid=1133710222;
-        if(session('?teacherid')) {
 
+
+
+        if(session('?teacherid')) {
+            $time=date("Y-m-d");
+            $timeset=M('timeset');
+            $set=$timeset->find('1');
+            if($time>$set['starttime2']||$time<$set['finishtime1'])
+            {
+                $this->error('您好，不在可用时间范围内',U('/home/teacherindex/'));
+            }
             $teacherid = session('teacherid');
 
             $teacherinfo = M('teacherinfo');
@@ -41,6 +50,13 @@ class EndgroupingController extends Controller {
         }
     }
     public function groupinput(){
+        $time=date("Y-m-d");
+        $timeset=M('timeset');
+        $set=$timeset->find('1');
+        if($time>$set['starttime2']||$time<$set['finishtime1'])
+        {
+            $this->error('您好，不在可用时间范围内',U('/home/teacherindex/'));
+        }
         $stuinfo = M('stuendassign');
         $stugroup=(array)($_POST['postData']);
         ////dump($stugroup);
@@ -57,6 +73,7 @@ class EndgroupingController extends Controller {
         $stuinfo->addAll($inputlist);
     }
     public function groupinginfo(){
+
         $stuinfo = M('stuinfo');
 
 //        //dump($data);
@@ -65,7 +82,7 @@ class EndgroupingController extends Controller {
         ////dump($data['size']);
         //
         $stulist = $stuinfo->page($_GET['page'],$_GET['size'])->join('LEFT join stuendassign ON stuinfo.stuid = stuendassign.stuid')
-            ->field('stuinfo.stuid as stuId,stuinfo.stuname as stuName,stuendassign.endgroupnum as groupId')
+            ->field('stuinfo.stuid as stuId,stuinfo.stuname as stuName,stuendassign.endgroupnum as groupId')->where('stuinfo.stustate>10')
             ->order('stuinfo.stuid')->select();
 
         ////echo M('stuinfo')->_sql();
@@ -104,6 +121,13 @@ class EndgroupingController extends Controller {
         $this->ajaxReturn($testarr,'JSON');
     }
     public function teachergrouping(){
+        $time=date("Y-m-d");
+        $timeset=M('timeset');
+        $set=$timeset->find('1');
+        if($time>$set['starttime2']||$time<$set['finishtime1'])
+        {
+            $this->error('您好，不在可用时间范围内',U('/home/teacherindex/'));
+        }
         $teacherendassign = M('teacherendassign');
         $groupnum=0;
         $groupnum=$teacherendassign->distinct(true)->field('endgroupnum')->select();
@@ -129,7 +153,13 @@ class EndgroupingController extends Controller {
         $this->display();
     }
     public function teachergroupinput(){
-
+        $time=date("Y-m-d");
+        $timeset=M('timeset');
+        $set=$timeset->find('1');
+        if($time>$set['starttime2']||$time<$set['finishtime1'])
+        {
+            $this->error('您好，不在可用时间范围内',U('/home/teacherindex/'));
+        }
         for($i=1;;$i++){
             //dump($_POST['group'.$i]);
             if(!empty($_POST['group'.$i])){

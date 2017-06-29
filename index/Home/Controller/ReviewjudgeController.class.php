@@ -20,6 +20,13 @@ class ReviewjudgeController extends Controller
             $teacherinfo = M('teacherinfo');
             $login = $teacherinfo->find($teacherid);
 
+            $time=date("Y-m-d");
+            $timeset=M('timeset');
+            $set=$timeset->find('1');
+            if($time<$set['starttime4']||$time>$set['finishtime4'])
+            {
+                $this->error('您好，不在可用时间范围内',U('/home/teacherindex/'));
+            }
             $teacher =M('stureviewassign')->where("teacherid=$teacherid")->select();
 
             if( $teacher==null){

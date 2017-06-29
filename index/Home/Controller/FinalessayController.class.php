@@ -19,6 +19,13 @@ class FinalessayController extends Controller
             $userinfo = $stuinfo->find($stuid);
             $stuessay =M('finalessay');
             $userrecord = $stuessay->find($stuid);
+            $time=date("Y-m-d");
+            $timeset=M('timeset');
+            $set=$timeset->find('1');
+            if($time<$set['finishtime5'])
+            {
+                $this->error('您好，不在可用时间范围内',U('/home/index/'));
+            }
             if($userrecord!=null) {
                 $stuendprojname = $userrecord['stuendprojname'];
                 $stuendreportname = $userrecord['stuendreportname'];

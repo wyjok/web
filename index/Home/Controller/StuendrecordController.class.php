@@ -19,6 +19,13 @@ class StuendrecordController extends Controller
             $userinfo = $stuinfo->find($stuid);
             $stuendrecord =M('stuendrecord');
             $userrecord = $stuendrecord->find($stuid);
+            $time=date("Y-m-d");
+            $timeset=M('timeset');
+            $set=$timeset->find('1');
+            if($time<$set['starttime1']||$time>$set['finishtime1'])
+            {
+                $this->error('您好，不在可用时间范围内',U('/home/index/'));
+            }
             if($userrecord!=null) {
 
                 $stuendprojname = $userrecord['stuendprojname'];
